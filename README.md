@@ -24,4 +24,10 @@
                                                         
       -Messagerie  // pour gerer les messages entre     
                                                         
-                                                     
+  #► Comment on va proceder?
+              
+              Chacun creera sa branche du projet en forkant, et travaillera sur l'app de son choix
+              enfin , en attendant qu'on finisse UML et qu'on partage les taches si vous voyez ce 
+              que je veux dire. Bref aller apprendre django c'est une occasion, besoins contactez
+              moi.
+              
