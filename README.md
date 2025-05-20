@@ -1,37 +1,27 @@
 # projet_integrateur_L2
-┌────────────────────────────────────────────────────────────┐
-│############################################################│
-│!┌────────────────────────────────────────────────────────┐!│
-│!│  ┌###################┐                                 │!│
-│!│  │┌&&&&&&&&&&&&&&&&&┐│           ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼    │!│
-│!│  ││▲▲▲▲         ▲▲▲▲││           ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼    │!│
-│!│  ││      HAVA       ││                 ▼▼▼▼▼▼▼▼▼▼▼▼    │!│
-│!│  │└─────────────────┘│ ┌##########┐    ▼▼▼▼▼▼▼▼▼▼▼▼    │!│
-│!│  └───────────────────┘ │┌&&&&&&&&┐│                    │!│
-│!│                        ││ V1.000 ││                    │!│
-│!│                        └┬┬┬┬┬┬┬┬┬┬┘                    │!│
-│!│                                                        │!│
-│!│  ► App disponible:                                     │!│
-│!│                                                        │!│
-│!│      -hava //app par defaut                            │!│
-│!│                                                        │!│
-│!│                                                        │!│
-│!│  ► App a venir:                                        │!│
-│!│                                                        │!│
-│││      -User // pour la gestion utilisatieur telle que   │││
-│││            // leur connexion , inscription ...         │││
-│││                                                        │││
-│││      -Propriete // pour tous les traitement en rapport │││
-│││                 // avec ses dernieres                  │││
-│││                                                        │││
-│││      -Rendez-vous // '''''''''''''''''''''' en rapport │││
-│││                   // avec les rendez-vous              │││
-│││                                                        │││
-│││      -Messagerie  // pour gerer les messages entre     │││
-│││                                                        │││
-│││                                                        │││
-│││                                                        │││
-│││                                                        │││
-│││┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴│││
-└└┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┘┘
-  │    │    │    │                          │    │    │    │  
+
+
+
+      HAVA       
+            ││ V1.000 ││                 
+
+
+  #► App disponible:                                     
+                                                        
+      -hava //app par defaut                            
+                                                        
+                                                        
+  #► App a venir:                                        
+                                                        
+      -User // pour la gestion utilisatieur telle que   
+            // leur connexion , inscription ...         
+                                                        
+      -Propriete // pour tous les traitement en rapport 
+                 // avec ses dernieres                  
+                                                        
+      -Rendez-vous // '''''''''''''''''''''' en rapport 
+                   // avec les rendez-vous              
+                                                        
+      -Messagerie  // pour gerer les messages entre     
+                                                        
+                                                     
