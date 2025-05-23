@@ -1,5 +1,5 @@
 from django.db import models
-
+from propriete.models import Propriete
 # Classe mère abstraite Utilisateur
 class Utilisateur(models.Model):
     nom = models.CharField(max_length=100)
@@ -20,19 +20,21 @@ class Utilisateur(models.Model):
             self.type = self.__class__.__name__.lower()
         super().save(*args, **kwargs)
 
+# Agent
+class Agent(Utilisateur):
+    pass
+
 # Client
 class Client(Utilisateur):
-    
-    liste_favoris = models.ManyToManyField('Propriete', blank=True)
+    agent = models.ForeignKey(Agent,on_delete=models.SET_NULL,null=True,blank=True,related_name='clients_suivis')
+    liste_favoris = models.ManyToManyField(Propriete , blank=True)
 
 # Bailleur
 class Bailleur(Utilisateur):
     # les propriétés seront reliées via un champ ForeignKey dans le modèle Propriete
     pass
 
-# Agent
-class Agent(Utilisateur):
-    clients = models.ManyToManyField('Client', related_name='agents_suivi', blank=True)
+
 
 # Manager
 class Manager(Utilisateur):
