@@ -1,0 +1,157 @@
+{% load static %}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %} <!-- pouvoir changer le titre de la page sur les diffentes pages-->
+        Agence Immobilière HAVA
+        {% endblock title%}
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base/style.css' %}" />
+    {% block css %} <!-- ici je pourrais ajouter le lien css pour le fichier html qui utilise ce layout-->{% endblock css %}
+
+    <script type="importmap">
+        {
+            "imports": {
+                "app": "{% static  'js/base/script.js' %}"
+            }
+        }
+    </script>
+    {% block js_map%}<!-- pour importer d'autre script-->{% endblock js_map%}
+</head>
+<body>
+    
+    <aside class="sidebar-menu" id="sidebarMenu">
+        <div class="logo-container">
+            <img src="logo.png" alt="Agence Immobilière Logo" class="logo">
+            <span class="agency-name">HAVA</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#hero" class="active">Accueil</a></li>
+                <li><a href="{% url "login" %}">Propriétés</a></li>
+                <li><a href="#services">Nos Services</a></li>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" class="login-btn">Connexion / Inscription</a></li>
+            </ul>
+        </nav>
+        <footer class="sidebar-footer">
+            <p>Suivez-nous sur les réseaux sociaux!</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+        
+            <p>&copy; 2024 HAVA</p>
+        </footer>
+    </aside>
+
+    <main class="content-area">
+        {% block content %}
+        <header class="main-header">
+            <!-- Can be used for page titles or breadcrumbs on other pages -->
+        </header>
+
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <h1>Trouvez la propriété de vos rêves</h1>
+                <p>Découvrez une sélection exclusive de biens immobiliers.</p>
+                <div class="search-bar-hero">
+                    <input type="text" placeholder="Pays, villes...">
+                    <button type="submit">Rechercher</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured-properties" class="content-section">
+            <h2>Propriétés à la Une</h2>
+            <div class="property-grid">
+                <div class="property-card">
+                    <img src="property-placeholder-1.png" alt="Belle villa avec piscine">
+                    <div class="property-info">
+                        <h3>Villa Luxueuse - Cannes</h3>
+                        <p class="price">2 500 000 €</p>
+                        <p>5 chambres, 4 SdB, Piscine, Vue Mer</p>
+                        <a href="#" class="details-btn">Voir Détails</a>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <img src="property-placeholder-2.png" alt="Appartement moderne en centre-ville">
+                    <div class="property-info">
+                        <h3>Appartement Centre - Paris 6ème</h3>
+                        <p class="price">1 200 000 €</p>
+                        <p>3 chambres, 2 SdB, Balcon, Proche Métro</p>
+                        <a href="#" class="details-btn">Voir Détails</a>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <img src="property-placeholder-3.png" alt="Maison de campagne avec grand jardin">
+                    <div class="property-tag">À Vendre</div>
+                    <div class="property-info">
+                        <h3>Maison de Charme - Provence</h3>
+                        <p class="price">850 000 €</p>
+                        <p>4 chambres, 3 SdB, Grand Jardin, Calme</p>
+                        <a href="#" class="details-btn">Voir Détails</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="content-section">
+            <h2>Nos Services</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <img src="service-icon-sale.png" alt="Vente immobilière" class="service-icon">
+                    <h3>Vente de Biens</h3>
+                    <p>Accompagnement complet pour la vente de votre propriété au meilleur prix.</p>
+                </div>
+                <div class="service-item">
+                    <img src="service-icon-rent.png" alt="Location immobilière" class="service-icon">
+                    <h3>Location & Gestion</h3>
+                    <p>Solutions de location et de gestion locative adaptées à vos besoins.</p>
+                </div>
+                <div class="service-item">
+                    <img src="service-icon-valuation.png" alt="Estimation immobilière" class="service-icon">
+                    <h3>Estimation Précise</h3>
+                    <p>Expertise et estimation de la valeur de votre bien immobilier.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2>À Propos de HAVA</h2>
+            <p>Depuis plus de 10 ans, HAVA s'engage à offrir un service d'excellence à ses clients. Notre connaissance approfondie du marché et notre réseau étendu nous permettent de concrétiser vos projets immobiliers, qu'il s'agisse d'achat, de vente ou de location. Nous valorisons la confiance, la transparence et la satisfaction client.</p>
+        </section>
+
+        <section id="contact" class="content-section">
+            <h2>Nous Contacter</h2>
+            <form class="contact-form">
+                <input type="text" name="name" placeholder="Votre Nom" required>
+                <input type="email" name="email" placeholder="Votre Email" required>
+                <textarea name="message" rows="5" placeholder="Votre Message" required></textarea>
+                <button type="submit" class="submit-btn">Envoyer le Message</button>
+            </form>
+        </section>
+    {% endblock content %}
+        
+
+    </main>
+
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <script type="module">
+        import { init } from 'app';
+        init();
+    </script>
+    {% block js_import%} <!--pour importer d'autre script-->{% endblock js_import%}
+</body>
+</html>

@@ -1,0 +1,493 @@
+:root {
+    --primary-color: #2D3A51; /* Deep Slate Blue */
+    --secondary-color: #4F627D; /* Muted Blue-Grey */
+    --accent-color: #E5A44A; /* Warm Gold */
+    --accent-color-hover: #CC8D39; /* Darker Gold */
+    --text-color: #333333; /* Very Dark Grey */
+    --light-text-color: #FFFFFF;
+    --bg-color: #F4F7F6; /* Light Cool Grey */
+    --sidebar-bg: #FFFFFF;
+    --border-color: #DDE2E5; /* Light Grey */
+    --card-bg: #FFFFFF;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.07); /* Softer shadow */
+    --font-family: 'Poppins', sans-serif;
+    --sidebar-width: 280px;
+    --mobile-sidebar-width: 280px; /* Can be same or different */
+    --transition-duration: 0.5s; /* Animation duration */
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    /* Scroll behavior removed as it's a single section page now */
+}
+
+
+
+/* Sidebar Menu */
+.sidebar-menu {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    border-right: none;
+    border-left: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-left: 0.5rem;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.agency-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.sidebar-menu nav ul {
+    list-style: none;
+}
+
+.sidebar-menu nav ul li a {
+    display: block;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 400;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-menu nav ul li a:hover,
+.sidebar-menu nav ul li a.active {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+}
+
+.sidebar-menu nav ul li a.login-btn {
+    background-color: var(--accent-color);
+    color: var(--light-text-color);
+    text-align: center;
+    font-weight: 600;
+    margin-top: 1.5rem;
+}
+.sidebar-menu nav ul li a.login-btn:hover {
+    background-color: var(--accent-color-hover);
+    color: var(--light-text-color);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #777;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Main Content Area */
+.content-area {
+    flex-grow: 1;
+    padding: 0;
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease-in-out;
+    position: relative;
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 2rem; /* Add some padding */
+}
+
+/* General Content Section Styling */
+.content-section {
+    padding: 0; /* Remove section padding, centering handled by content-area */
+    width: 100%; /* Allow section to take full width */
+    max-width: 1200px; /* Max width for the content */
+}
+
+.content-section h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Utility class to hide sections */
+.content-section.hidden {
+    display: none;
+}
+
+/* Authentication Section */
+.auth-section {
+    /* Specific padding removed, using content-area padding */
+}
+
+.auth-container {
+    max-width: 1000px; /* Increased max-width for two columns */
+    margin: 0 auto; /* Center the container */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two column layout */
+    gap: 3rem; /* Gap between columns */
+    align-items: start;
+}
+
+.auth-header {
+    grid-column: 1 / -1; /* Header spans full width across both columns */
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.auth-header h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.auth-forms-container {
+    /* This container now occupies one grid cell */
+    max-width: 750px; /* Remove previous max-width rule */
+    margin: 0; /* Remove previous margin auto rule */
+}
+
+/* Benefits Section */
+.auth-benefits {
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    /*align-self: stretch; /* Make benefits section fill the height of the forms container if needed */
+    display: flex; /* Use flex to align content */
+    flex-direction: column;
+}
+
+.auth-benefits h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.auth-benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.auth-benefits li {
+    display: flex;
+    align-items: flex-start; /* Align icon and text */
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.auth-benefits li i {
+    color: var(--accent-color); /* Color for the check icon */
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    margin-top: 3px; /* Adjust vertically */
+}
+
+/* New viewport for sliding forms */
+.forms-slider-viewport {
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Clips the sliding forms */
+    transition: height var(--transition-duration) ease-in-out;
+    /* Height will be set by JS */
+}
+
+.form-toggle {
+    display: flex;
+    margin-bottom: 2rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bg-color);
+}
+
+.form-toggle .toggle-btn {
+    flex-grow: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.form-toggle .toggle-btn.active {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+}
+
+.auth-form {
+    /* Styles moved from .auth-forms-container and new positioning styles */
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform var(--transition-duration) ease-in-out, opacity var(--transition-duration) ease-in-out;
+}
+
+/* Initial states for forms */
+#login-form {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: 2; /* Active form on top */
+    visibility: visible;
+}
+
+#signup-form {
+    transform: translateX(100%); /* Start off-screen to the right */
+    opacity: 0;
+    z-index: 1;
+    visibility: hidden; /* Initially hidden and not interactive */
+}
+
+.auth-form h3 {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.auth-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group i {
+    position: absolute;
+    left: 1rem;
+    color: #666;
+    z-index: 1;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(45, 58, 81, 0.1);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.remember-me,
+.terms-accept {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.remember-me input,
+.terms-accept input {
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.terms-accept span a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.terms-accept span a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.auth-form .submit-btn {
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: 1rem 0 0 0; /* Adjusted margin as social login is removed */
+    transition: all 0.3s ease;
+}
+
+.auth-form .submit-btn:hover {
+    background-color: var(--accent-color-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 164, 74, 0.3);
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: var(--primary-color);
+    color: var(--light-text-color);
+    border: none;
+    padding: 0.6rem;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 44px;
+    height: 44px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: var(--light-text-color);
+    border-radius: 1px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hamburger to X animation */
+body.menu-open .mobile-menu-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+body.menu-open .mobile-menu-toggle span:nth-child(2) {
+    opacity: 0;
+}
+body.menu-open .mobile-menu-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .sidebar-menu {
+        transform: translateX(-100%);
+        width: var(--mobile-sidebar-width);
+        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        border-left: none;
+    }
+
+    body.menu-open .sidebar-menu {
+        transform: translateX(0);
+    }
+
+    .content-area {
+        margin-left: 0;
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    /* Specific auth adjustments for medium screens */
+    .auth-container {
+        grid-template-columns: 1fr; /* Stack columns vertically */
+        gap: 2rem;
+        max-width: 600px; /* Limit width on smaller screens */
+        margin: 0 auto; /* Center the stacked content */
+    }
+
+    .auth-header {
+        margin-bottom: 1rem; /* Reduce margin */
+    }
+
+    .auth-header h2 {
+        font-size: 2rem;
+    }
+
+    .auth-forms-container {
+        min-height: 550px;/* Allow it to take full width of container */
+        margin: 0 auto; /* Re-center within the single column */
+    }
+
+    .auth-benefits {
+        padding: 1.5rem; /* Adjust padding for benefits section */
+        margin-top: 0; /* Remove margin top if stacking */
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-form { /* Reduce padding on smaller screens for the forms themselves */
+        padding: 1.5rem;
+    }
+
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .auth-header h2 {
+        font-size: 1.8rem;
+    }
+    .auth-header p {
+        font-size: 1rem;
+    }
+}
