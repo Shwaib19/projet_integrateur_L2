@@ -1,0 +1,105 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Espace Agent - Tableau de Bord{% endblock title %}</title>
+    {% block css %} <!-- ici je pourrais ajouter le lien css pour le fichier html qui utilise ce layout-->
+    <link rel="stylesheet" href="{% static 'css/accounts/agent.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% endblock css %}
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+
+        <main>
+            
+            
+            <section class="welcome">
+                <h2>Bienvenue dans votre espace agent</h2>
+                <p>Gérez vos communications, rendez-vous et propriétés depuis un seul endroit</p>
+            </section>
+
+            <section class="features">
+                <div class="card" id="messagerie">
+                    <div class="card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Messagerie</h3>
+                        <p>Gérez vos communications avec les clients et partenaires</p>
+                        <ul>
+                            <li>Messagerie instantanée</li>
+                            <li>Notifications en temps réel</li>
+                            <li>Historique des conversations</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="rendez-vous">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Rendez-vous</h3>
+                        <p>Planifiez et gérez vos rendez-vous clients</p>
+                        <ul>
+                            <li>Calendrier interactif</li>
+                            <li>Rappels automatiques</li>
+                            <li>Synchronisation multi-appareils</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="proprietes">
+                    <div class="card-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Propriétés</h3>
+                        <p>Gérez votre portefeuille immobilier</p>
+                        <ul>
+                            <li>Listings détaillés</li>
+                            <li>Suivi des ventes/locations</li>
+                            <li>Documentation complète</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="quick-stats">
+                <h2>Aperçu rapide</h2>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <h4>Messages non lus</h4>
+                        <p class="stat-number">12</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Rendez-vous aujourd'hui</h4>
+                        <p class="stat-number">3</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Propriétés actives</h4>
+                        <p class="stat-number">24</p>
+                    </div>
+                </div>
+            </section>
+
+        
+    </main>
+    
+        <footer>
+            <p>© 2023 Espace Agent - Tous droits réservés</p>
+        </footer>
+    </div>
+    {% endblock content %}
+
+    <script src= {% static  'js/accounts/"agent.js" ' %}></script>
+</body>
+</html>

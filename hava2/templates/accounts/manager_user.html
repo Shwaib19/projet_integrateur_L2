@@ -1,0 +1,203 @@
+{% extends "base/layout.html" %}
+{% load static%}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion des utilisateurs - HAVA{% endblock title %}</title>
+    {% block css %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="stylesheet" href="{% static 'css/accounts/manager_user.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% endblock css %}
+    <script type="importmap">
+    {
+        "imports": {
+            "app": "./script.js"
+        }
+    }
+    </script>
+</head>
+<body>
+    
+    {% block content %}
+        <section id="users-management" class="content-section users-section">
+            <div class="users-container">
+                <div class="users-header">
+                    <h2>Gestion des Utilisateurs</h2>
+                    <p>Gérez les comptes utilisateurs et les accès à la plateforme</p>
+                </div>
+
+                <div class="users-actions-bar">
+                    <div class="search-users">
+                        <input type="text" id="search-input" placeholder="Rechercher un utilisateur..." class="search-input" /> 
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="users-filters">
+                        
+                        <div class="filter-group">
+                            <label for="filter-role">Rôle :</label>
+                            <select id="filter-role" class="filter-select">
+                                <option value="all">Tous</option>
+                                <option value="client">Client</option>
+                                <option value="bailleur">Bailleur</option>
+                                <option value="agent">Agent</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-primary add-user-btn"><i class="fas fa-plus"></i> Nouvel utilisateur</button>
+                </div>
+
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="select-all">
+                                        <label for="select-all"></label>
+                                    </div>
+                                </th>
+                                <th>Nom <i class="fas fa-sort"></i></th>
+                                <th>Email <i class="fas fa-sort"></i></th>
+                                <th>Rôle <i class="fas fa-sort"></i></th>
+                                <th>Statut <i class="fas fa-sort"></i></th>
+                                <th>Date d'inscription <i class="fas fa-sort"></i></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- User Row 1 -->
+
+                            {% for user in utilisateurs %}
+                            
+                            <tr>
+                                <td>
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="user-{{ forloop.counter }}">
+                                        <label for="user-{{ forloop.counter }}"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info0">
+                                        {% if user.user_type == 'MANAGER' %}
+                                        <div class="user-avatar"><i class="fas fa-user-shield"></i></div>
+                                        {% else  %}
+                                        <div class="user-avatar"><i class="fas fa-user"></i></div>
+                                        {% endif %} 
+                                        <div class="user-name">{{user.first_name}} {{user.last_name}}</div>
+                                    </div>
+                                </td>
+                                <td>{{user.email}}</td>
+                                <td><span class="badge role-{{user.user_type}}"> {{user.user_type}} </span></td>
+                                <td><span class="badge status-active"> {{user.phone}} </span></td>
+                                <td> {{user.date_joined}} </td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn" aria-label="Éditer"><i class="fas fa-edit"></i></button>
+                                        <a href="{% url "delete_user" user.email %}">
+                                            <button class="action-btn " data-user-id="{{ user.email }}" aria-label="Supprimer">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                             {% endfor %} 
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+
+            </div>
+        </section>
+        <!--Script pour le filtrage des utilisateur-->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const filterSelect = document.getElementById("filter-role");
+            
+                filterSelect.addEventListener("change", function () {
+                    const selectedRole = this.value.toLowerCase();
+                    const rows = document.querySelectorAll("tbody tr");
+            
+                    rows.forEach(row => {
+                        const roleBadge = row.querySelector(".badge.role-MANAGER, .badge.role-AGENT, .badge.role-CLIENT");
+                        if (!roleBadge) return;
+            
+                        const role = roleBadge.textContent.trim().toLowerCase();
+            
+                        if (selectedRole === "all" || selectedRole === role) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                });
+            });
+            </script>
+
+
+            <!--Script pour la recherche d'utilisateur-->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const searchInput = document.getElementById("search-input");
+                
+                    searchInput.addEventListener("keyup", function () {
+                        const searchTerm = this.value.toLowerCase();
+                        const rows = document.querySelectorAll("tbody tr");
+                
+                        rows.forEach(row => {
+                            const name = row.querySelector(".user-name")?.textContent.toLowerCase() || "";
+                            const email = row.querySelector("td:nth-child(3)")?.textContent.toLowerCase() || "";
+                
+                            if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                                row.style.display = "";
+                            } else {
+                                row.style.display = "none";
+                            }
+                        });
+                    });
+                });
+
+
+                //script pour cocher toutes les cases
+
+                const selectAllCheckbox = document.getElementById('select-all');
+                const userCheckboxes = document.querySelectorAll('.users-table tbody input[type="checkbox"]');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.addEventListener('change', () => {
+                        userCheckboxes.forEach(checkbox => {
+                            checkbox.checked = selectAllCheckbox.checked;
+                        });
+                    });
+                }
+
+            </script>
+
+
+
+
+    {% endblock content %}
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+
+ 
+
+    <script type="module">
+        import { init, initUsersManagement } from 'app';
+        init();
+        initUsersManagement();
+    </script>
+</body>
+</html>

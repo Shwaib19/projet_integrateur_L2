@@ -97,3 +97,47 @@ def logout_view(request):
     request.session.flush()
     messages.success(request, "Déconnexion réussie.")
     return redirect('login')  # Redirige vers la page de connexion
+
+
+
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import  ClientForm  # Assure-toi que ClientForm utilise bien ton CustomUser
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+def accueil_auth(request):
+    login_form = LoginForm()
+    register_form = ClientForm()
+
+    if request.method == 'POST':
+        if 'connexion' in request.POST:
+            login_form = LoginForm(request.POST)
+            if login_form.is_valid():
+                email = login_form.cleaned_data['email']
+                mot_de_passe = login_form.cleaned_data['mot_de_passe']
+                user = authenticate(request, email=email, password=mot_de_passe)
+                if user:
+                    login(request, user)
+                    messages.success(request, "Connexion réussie.")
+                    return redirect('dashboard')  # change selon ton URL
+                else:
+                    messages.error(request, "Email ou mot de passe incorrect.")
+            else:
+                messages.error(request, "Veuillez corriger les erreurs du formulaire de connexion.")
+        
+        elif 'inscription' in request.POST:
+            register_form = ClientForm(request.POST)
+            if register_form.is_valid():
+                register_form.save()
+                messages.success(request, "Inscription réussie. Vous pouvez maintenant vous connecter.")
+                return redirect('index')  # ou accueil_auth
+            else:
+                messages.error(request, "Veuillez corriger les erreurs du formulaire d'inscription.")
+
+    return render(request, "accounts/index.html", {
+        'login_form': login_form,
+        'register_form': register_form,
+    })

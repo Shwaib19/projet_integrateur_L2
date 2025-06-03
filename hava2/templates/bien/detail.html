@@ -1,0 +1,104 @@
+{% extends "base/layout.html" %}
+{% load static%}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}proprietes{% endblock title %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static "css/bien/style.css" %}" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    {% endblock css %}
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+        <header>
+            <h1>Détails de la Propriété</h1>
+        </header>
+
+        <main class="property-page">
+            <section class="image-carousel">
+                <div class="carousel-container">
+                    <div class="image-grid">
+                        <div class="main-image">
+                            <img src="{{images.first.image.url}}" alt="Image principale de la propriété" id="main-property-image">
+                        </div>
+                        <div class="thumbnail-container">
+                            
+                            {% if images|length > 0 %}
+                            <img src="{{images.first.image.url}}" alt="Image 1 de la propriété" class="thumbnail active" data-index="0">
+                          {% endif %}
+                          {% if images|length > 1 %}
+                            <img src="{{ images.1.image.url }}" alt="Image 2 de la propriété" class="thumbnail" data-index="1">
+                          {% endif %}
+                          {% if images|length > 2 %}
+                          <img src="{{ images.2.image.url }}" alt="Image 3 de la propriété" class="thumbnail" data-index="2">
+                          {% endif %}
+                          {% if images|length > 3 %}
+                          <img src="{{ images.3.image.url }}" alt="Image 4 de la propriété" class="thumbnail" data-index="3">
+                          {% endif %}
+                          {% if images|length > 4 %}
+                          <img src="{{ images.4.image.url }}" alt="Image 5 de la propriété" class="thumbnail" data-index="4">
+                          {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="property-actions">
+                <button class="action-button like-button"><i class="fas fa-heart"></i> Liker</button>
+                <button class="action-button edit-button"><i class="fas fa-edit"></i> Modifier</button>
+            </section>
+
+            <section class="property-details">
+                <h2>Belle Maison en Centre-Ville</h2>
+                <p class="price">Prix: {{propriete.prix}} fcfa</p>
+                <p class="location">{{propriete.localisations}}</p>
+                <div class="description">
+                    <h3>{{propriete.option}}</h3>
+                    <p>
+                        Superbe maison de 150m² située en plein cœur du centre-ville.
+                        Elle comprend 4 chambres spacieuses, un grand salon lumineux,
+                        une cuisine équipée et un jardin privatif avec terrasse.
+                        Proche de toutes commodités (écoles, commerces, transports).
+                        Idéale pour une famille.
+                    </p>
+                </div>
+                <div class="features">
+                    <h3>Caractéristiques</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>Surface: {{propriete.superficie}} m²</span>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+        </main>
+        
+        <footer>
+            <p>&copy; 2023 Votre Site Immobilier</p>
+        </footer>
+        
+    </div>
+
+    {% endblock content %}
+    
+    {% block js_import%}<script src="{% static "js/bien/script.js" %}"></script>{% endblock js_import%}
+    
+</body>
+</html>

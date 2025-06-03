@@ -1,0 +1,158 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Espace Manager - Tableau de Bord{% endblock title %}</title>
+    {% block css %} <!-- ici je pourrais ajouter le lien css pour le fichier html qui utilise ce layout-->
+    <link rel="stylesheet" href="{% static 'css/accounts/manager.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% endblock css %}
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+
+        <main>
+            
+            
+            <section class="welcome">
+                <h2>Bienvenue dans votre espace Manager</h2>
+                <p>Acceder a toutes les infos du systeme, clients, agents, bailleurs gardez un oeuil sur tout</p>
+            </section>
+
+            <section class="quick-stats">
+                <h2>Statistiques</h2>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <h4>Nombres de clients</h4>
+                        <p class="stat-number">{{clients_count}}</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Nombres d'agent</h4>
+                        <p class="stat-number">{{agents_count}}</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Nombres de bailleurs</h4>
+                        <p class="stat-number">xx</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Propriétés actives</h4>
+                        <p class="stat-number">xx</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features">
+                <div class="card" id="messagerie">
+                    <div class="card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Messagerie</h3>
+                        <p>Gérez vos communications avec les clients et partenaires</p>
+                        <ul>
+                            <li>Messagerie instantanée</li>
+                            <li>Notifications en temps réel</li>
+                            <li>Historique des conversations</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="rendez-vous">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Rendez-vous</h3>
+                        <p>Planifiez et gérez vos rendez-vous clients</p>
+                        <ul>
+                            <li>Calendrier interactif</li>
+                            <li>Rappels automatiques</li>
+                            <li>Synchronisation multi-appareils</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="proprietes">
+                    <div class="card-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Propriétés</h3>
+                        <p>Gérez votre portefeuille immobilier</p>
+                        <ul>
+                            <li>Listings détaillés</li>
+                            <li>Suivi des ventes/locations</li>
+                            <li>Documentation complète</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+                <div class="card" id="gerer-clients">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gérer les Utilisateurs</h3>
+                        <p>Accédez aux informations clients et gérez leurs dossiers</p>
+                        <ul>
+                            <li>Base de données clients</li>
+                            <li>Historique des interactions</li>
+                            <li>Segmentation</li>
+                        </ul>
+                        <a href="{% url "manage_users" %}" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="gerer-agents">
+                    <div class="card-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gérer les agents</h3>
+                        <p>Supervisez les performances et gérez l'équipe d'agents</p>
+                        <ul>
+                            <li>Performance des agents</li>
+                            <li>Attribution des tâches</li>
+                            <li>Gestion des accès</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="gerer-bailleurs">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gérer les bailleurs</h3>
+                        <p>Gérez les relations et les propriétés des bailleurs</p>
+                        <ul>
+                            <li>Portefeuille bailleurs</li>
+                            <li>Propriétés associées</li>
+                            <li>Contrats et paiements</li>
+                        </ul>
+                        <a href="#" class="btn">Accéder</a>
+                    </div>
+                </div>
+            </section>
+
+            
+
+        
+    </main>
+    
+        <footer>
+            <p>© 2023 Espace Agent - Tous droits réservés</p>
+        </footer>
+    </div>
+    {% endblock content %}
+
+    <script src= {% static  'js/accounts/"agent.js" ' %}></script>
+</body>
+</html>

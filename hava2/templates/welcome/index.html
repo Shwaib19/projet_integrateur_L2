@@ -1,0 +1,99 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agence Immobilière HAVA{% endblock title %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/welcome/index.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% endblock css %}
+   
+
+    <main class="content-area">
+        {% block content %}
+        
+
+
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <h1>Trouvez la propriété de vos rêves avec Hava</h1>
+                <p>Découvrez une sélection exclusive de biens immobiliers.</p>
+                <div class="search-bar-hero">
+                    <input type="text" placeholder="Ville, code postal, référence...">
+                    <button type="submit">Rechercher</button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section id="featured-properties" class="content-section">
+            <h2>Propriétés à la Une</h2>
+
+        <!-- Filter Options -->
+        <div class="filter-bar">
+            <input type="text" id="filter-location" placeholder="Ville, quartier..." aria-label="Filtrer par localisation">
+            <select id="filter-type" aria-label="Filtrer par type">
+                <option value="all">Tous types</option>
+                <option value="sale">À Vendre</option>
+                <option value="rent">À Louer</option>
+            </select>
+            <input type="number" id="filter-min-price" placeholder="Prix Min (€)" aria-label="Prix minimum">
+            <input type="number" id="filter-max-price" placeholder="Prix Max (€)" aria-label="Prix maximum">
+            <button id="apply-filters">Filtrer</button>
+        </div>
+
+
+            
+            <div class="property-grid">
+
+                {% for propriete in proprietes %}
+                <div class="property-card">
+
+                    <img src="{{ propriete.images.first.image.url }}" alt="{{ propriete.type }} à {{ propriete.localisation }}">
+                    
+                  <div class="property-tag">{{ propriete.option }}</div>
+                  <div class="property-info">
+                    <h3>{{ propriete.type }} - {{ propriete.localisation }}</h3>
+                    <p class="price">{{ propriete.prix }} FCFA</p>
+                    <p>{{ propriete.usage }}</p>
+                    <a href="{% url 'propriete_detail' propriete.pk %}" class="details-btn">Voir Détails</a>
+                  </div>
+                </div>
+              {% endfor %}
+
+                
+            </div>
+        </section>
+
+        
+        
+        <footer class="content-footer">
+            <p>Suivez-nous sur les réseaux sociaux!</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </footer>
+        {% endblock content %}
+    </main>
+
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <script type="module">
+        import { init } from 'app';
+        init();
+    </script>
+</body>
+</html>

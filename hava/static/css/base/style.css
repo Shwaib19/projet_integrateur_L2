@@ -33,6 +33,7 @@ body {
     display: flex; /* For sidebar layout */
     position: relative; /* For mobile menu positioning */
     overflow-x: hidden; /* Prevent horizontal scroll from hidden sidebar */
+    overflow-x:scroll; 
 }
 
 /* Sidebar Menu */
@@ -454,55 +455,9 @@ body.menu-open .mobile-menu-toggle span:nth-child(3) {
         transform: translateX(0); 
     }
 
-    .content-area {
-        margin-left: 0; 
-    }
-    
-    .main-header {
-        padding: 1rem;
-    }
-    .content-section {
-        padding: 2rem 1rem;
-    }
-
     .mobile-menu-toggle {
         display: flex; 
     }
 
-    .hero-content h1 {
-        font-size: 2.2rem;
-    }
-    .hero-content p {
-        font-size: 1rem;
-    }
-    .search-bar-hero {
-        flex-direction: column;
-        gap: 0.5rem;
-        background-color: transparent;
-        backdrop-filter: none;
-    }
-    .search-bar-hero input[type="text"],
-    .search-bar-hero button {
-        border-radius: 6px; 
-    }
-    .search-bar-hero input[type="text"] {
-        background-color: rgba(255,255,255,0.9);
-    }
-
 }
 
-@media (max-width: 768px) { 
-    .property-grid {
-        grid-template-columns: 1fr; 
-    }
-    .services-grid {
-        grid-template-columns: 1fr; 
-    }
-    .hero-section {
-        padding: 4rem 1rem;
-        min-height: 60vh;
-    }
-     .content-section h2 {
-        font-size: 1.8rem;
-    }
-}

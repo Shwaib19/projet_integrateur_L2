@@ -1,5 +1,5 @@
 from django import forms
-from .models import Utilisateur,Client,Agent,Bailleur
+from .models import Utilisateur
 from django.contrib.auth.hashers import make_password
 
 #Formulaire pour recuperer les infos tout en s'assurant du typage
@@ -12,7 +12,7 @@ class ClientForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Client
+        model = Utilisateur
         fields = ['nom', 'prenom', 'email', 'mot_de_passe', 'telephone', 'adresse']
         widgets = {
             'adresse': forms.Textarea(attrs={'rows': 2}),
@@ -34,7 +34,7 @@ class AgentForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Agent
+        model = Utilisateur
         fields = ['nom', 'prenom', 'email', 'mot_de_passe', 'telephone', 'adresse']
         widgets = {
             'adresse': forms.Textarea(attrs={'rows': 2}),
@@ -57,7 +57,7 @@ class BailleurForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Bailleur
+        model = Utilisateur
         fields = ['nom', 'prenom', 'email', 'mot_de_passe', 'telephone', 'adresse']
         widgets = {
             'adresse': forms.Textarea(attrs={'rows': 2}),
@@ -74,6 +74,18 @@ class BailleurForm(forms.ModelForm):
 #login
 
 
-class LoginForm(forms.Form):
-    email = forms.EmailField(label="Email")
-    mot_de_passe = forms.CharField(widget=forms.PasswordInput, label="Mot de passe")
+class ConnexionForm(forms.Form):
+    username = forms.CharField(
+        label="Nom d'utilisateur",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Entrez votre nom d\'utilisateur'
+        })
+    )
+    password = forms.CharField(
+        label="Mot de passe",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control', 
+            'placeholder': 'Entrez votre mot de passe'
+        })
+    )

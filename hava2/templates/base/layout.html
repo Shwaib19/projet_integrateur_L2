@@ -1,0 +1,94 @@
+{% load static %}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %} 
+        Agence Immobilière HAVA
+        {% endblock title%}
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base/style.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+    {% block css %} <!-- ici je pourrais ajouter le lien css pour le fichier html qui utilise ce layout-->{% endblock css %}
+
+    <script type="importmap">
+        {
+            "imports": {
+                "app": "{% static  'js/base/script.js' %}"
+            }
+        }
+    </script>
+    {% block js_map%}<!-- pour importer d'autre script-->{% endblock js_map%}
+</head>
+<body>
+    
+    <aside class="sidebar-menu" id="sidebarMenu">
+        <div class="logo-container">
+            <img src="logo.png" alt="Agence Immobilière Logo" class="logo">
+            <span class="agency-name">HAVA</span>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="user-info hidden" id="sidebarUserInfo">
+            <span id="sidebar-client-name">{{ user.first_name }} {{ user.last_name }}</span>
+            <span class="account-type">{{ user.user_type }}</span>
+        </div>
+        {% else %}
+        {% endif %}
+        <nav>
+            <ul>
+                <li><a href=" {% url 'index' %} ">Accueil</a></li>
+                
+
+                {% if user.is_authenticated %}
+                <li><a href="">Mesfavoris</a></li>
+                {% else %}
+                {% endif %}
+
+                <li><a href="#services">Nos Services</a></li>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+
+
+                {% if user.is_authenticated %}
+                <li><a href="#">Messagerie</a></li>
+                <li><a href=" {% url 'logout' %} " class="login-btn">Deconnexion</a></li>
+                {% else %}
+                <li><a href=" {% url 'login' %}  " class="login-btn">Connexion / Inscription</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+        <footer class="sidebar-footer">
+
+        
+            <p>&copy; 2024 HAVA</p>
+        </footer>
+    </aside>
+
+    <div class="content-area">
+        {% block content %}
+        
+    {% endblock content %}
+    </div>   
+
+ 
+
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <script type="module">
+        import { init } from 'app';
+        init();
+    </script>
+    {% block js_import%} <!--pour importer d'autre script-->{% endblock js_import%}
+</body>
+</html>

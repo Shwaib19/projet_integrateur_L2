@@ -5,11 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {% block title %} <!-- pouvoir changer le titre de la page sur les diffentes pages-->
+        {% block title %} 
         Agence Immobilière HAVA
         {% endblock title%}
     </title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/base/style.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
     {% block css %} <!-- ici je pourrais ajouter le lien css pour le fichier html qui utilise ce layout-->{% endblock css %}
 
     <script type="importmap">
@@ -30,14 +35,15 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#hero" class="active">Accueil</a></li>
-                <li><a href="{% url "login" %}">Propriétés</a></li>
+                <li><a href="" class="active">Accueil</a></li>
+                <li><a href="">Propriétés</a></li>
                 <li><a href="#services">Nos Services</a></li>
                 <li><a href="#about">À Propos</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="#" class="login-btn">Connexion / Inscription</a></li>
             </ul>
         </nav>
+        
         <footer class="sidebar-footer">
             <p>Suivez-nous sur les réseaux sociaux!</p>
             <div class="social-icons">
@@ -53,10 +59,6 @@
 
     <main class="content-area">
         {% block content %}
-        <header class="main-header">
-            <!-- Can be used for page titles or breadcrumbs on other pages -->
-        </header>
-
         <section id="hero" class="hero-section">
             <div class="hero-content">
                 <h1>Trouvez la propriété de vos rêves</h1>

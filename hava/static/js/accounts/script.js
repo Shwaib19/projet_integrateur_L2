@@ -127,57 +127,5 @@ export function init() {
         });
     }
 
-    const authForms = document.querySelectorAll('.auth-form-content');
-    authForms.forEach(form => {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const formContainer = form.closest('.auth-form'); // Get the #login-form or #signup-form
-            const formType = formContainer ? formContainer.id : null;
-
-
-            if (formType === 'signup-form') {
-                const password = formData.get('password');
-                const confirmPassword = formData.get('confirm-password');
-
-                if (password !== confirmPassword) {
-                    alert('Les mots de passe ne correspondent pas.');
-                    return;
-                }
-
-                const termsCheckbox = form.querySelector('input[name="terms"]');
-                if (termsCheckbox && !termsCheckbox.checked) {
-                    alert('Vous devez accepter les conditions d\'utilisation.');
-                    return;
-                }
-            }
-
-            const submitBtn = form.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = formType === 'login-form' ? 'Connexion en cours...' : 'Création en cours...';
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                const success = Math.random() < 0.8;
-
-                if (success) {
-                    alert(formType === 'login-form' ? 'Connexion réussie!' : 'Compte créé avec succès!');
-                    form.reset();
-                    if (formType === 'signup-form') {
-                        // Simulate click on login toggle button to switch back with animation
-                        const loginToggleBtn = document.querySelector('.toggle-btn[data-form="login"]');
-                        if (loginToggleBtn) {
-                            loginToggleBtn.click();
-                        }
-                    }
-                } else {
-                    alert(formType === 'login-form' ? 'Échec de la connexion. Veuillez vérifier vos identifiants.' : 'Échec de la création du compte. Veuillez réessayer.');
-                }
-
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
-    });
+    
 }
