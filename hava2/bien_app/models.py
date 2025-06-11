@@ -10,7 +10,6 @@ TYPE_CHOICES = [
         ("PARKING", 'Parking'),
     ]
 
-
 STATUT_CHOICES = [
     ('disponible', 'Disponible'),
     ('louee', 'Louée'),

@@ -50,7 +50,9 @@
                             </select>
                         </div>
                     </div>
-                    <button class="btn-primary add-user-btn"><i class="fas fa-plus"></i> Nouvel utilisateur</button>
+                    <a href="{% url "manager_add_user"%}">
+                        <button class="btn-primary add-user-btn"><i class="fas fa-plus"></i> Nouvel utilisateur</button>
+                    </a>
                 </div>
 
                 <div class="users-table-container">
@@ -63,11 +65,11 @@
                                         <label for="select-all"></label>
                                     </div>
                                 </th>
-                                <th>Nom <i class="fas fa-sort"></i></th>
-                                <th>Email <i class="fas fa-sort"></i></th>
-                                <th>Rôle <i class="fas fa-sort"></i></th>
-                                <th>Statut <i class="fas fa-sort"></i></th>
-                                <th>Date d'inscription <i class="fas fa-sort"></i></th>
+                                <th>Nom </th>
+                                <th>Email </th>
+                                <th>Rôle </th>
+                                <th>Téléphone </th>
+                                <th>Date d'inscription </th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -95,11 +97,24 @@
                                 </td>
                                 <td>{{user.email}}</td>
                                 <td><span class="badge role-{{user.user_type}}"> {{user.user_type}} </span></td>
+                                
+                                {% if user.phone %}
+                                
                                 <td><span class="badge status-active"> {{user.phone}} </span></td>
+                                {% else %}
+                                <td><span class="badge status-active"> None </span></td>
+                                {% endif%}
+
                                 <td> {{user.date_joined}} </td>
                                 <td>
                                     <div class="table-actions">
+                                        {% if user.user_type == 'CLIENT'%}
+                                        <a href="{% url "modifier_client" user.id %}">
                                         <button class="action-btn" aria-label="Éditer"><i class="fas fa-edit"></i></button>
+                                        </a>
+                                        {% else %}
+                                        <button class="action-btn" aria-label="Éditer"  ><i class="fas fa-ban"></i></button>
+                                        {%endif%}
                                         <a href="{% url "delete_user" user.email %}">
                                             <button class="action-btn " data-user-id="{{ user.email }}" aria-label="Supprimer">
                                                 <i class="fas fa-trash-alt"></i>
@@ -128,7 +143,7 @@
                     const rows = document.querySelectorAll("tbody tr");
             
                     rows.forEach(row => {
-                        const roleBadge = row.querySelector(".badge.role-MANAGER, .badge.role-AGENT, .badge.role-CLIENT");
+                        const roleBadge = row.querySelector(".badge.role-MANAGER, .badge.role-AGENT, .badge.role-CLIENT, .badge.role-BAILLEUR");
                         if (!roleBadge) return;
             
                         const role = roleBadge.textContent.trim().toLowerCase();
@@ -181,8 +196,13 @@
 
             </script>
 
-
-
+    {% if messages %}
+            <script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+            </script>
+    {% endif %}
 
     {% endblock content %}
     <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">

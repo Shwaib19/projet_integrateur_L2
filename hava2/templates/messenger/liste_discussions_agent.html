@@ -1,0 +1,267 @@
+{% extends "base/layout.html" %}
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Messenger{% endblock title %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static "css/messenger/liste_discussion_agent.css" %}" >
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    {% endblock css %}
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Espace Messagerie</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Tableau de bord</a></li>
+                    <li><a href="#" class="active">Messagerie</a></li>
+                    <li><a href="#">Mon profil</a></li>
+                    <li><a href="#">Paramètres</a></li>
+                    <li><a href="#" class="logout">Déconnexion</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        {% block content %}
+            <div class="messaging-container">
+                <div class="contacts-sidebar">
+                    <div class="search-contacts">
+                        <input type="text" placeholder="Rechercher un contact..." id="search-contact">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <div class="contact-filter">
+                        <h3>Discussion</h3>
+                        
+                    </div>
+                    
+                    <ul class="contacts-list">
+                        {% for item in discussions_data %}
+                        
+                        <li class="contact  discussion-item" 
+                            id="{{ item.discussion.id }}"
+                            data-discussion-id="{{ item.discussion.id }}"
+                            data-client-nom="{{ item.client_nom }}"
+                            onclick="chargerMessagesDepuisElement(this)"><div class="contact-avatar">
+                                <i class="fas fa-user"></i>
+                                
+                            </div>
+                            
+                            <div class="contact-info">
+                                <h3>{{ item.client_nom }}</h3>
+                                <p class="last-message">
+                                    {% if item.dernier_message %}
+                                         {{ item.dernier_message.contenu }}
+                                    {% else %}
+                                        <em>Aucun message</em>
+                                    {% endif %}
+                                </p>
+                                <span class="message-time">
+                                    {{ item.dernier_message.date_envoi }}
+                                </span>
+                                
+                            </div>
+                        </li>
+                         {% endfor %}
+                        
+                    </ul>
+                </div>
+                
+                <div class="chat-area">
+                    <div class="chat-header">
+                        <div class="chat-contact-info">
+                            <div class="user-avatar">   <i class="fas fa-user"></i></div>
+                            <div>
+                                <h3 id="user_name"> Selectionnez une discussion</h3>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="chat-messages" id="chat-messages" data-discussion-id="" >
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    
+                    
+                        
+                        <form id="message-form">
+                            <div class="chat-input">
+                            <input type="text" id="message-input" placeholder="Tapez votre message..." required>
+                            
+                            <button type="submit" class="send-btn" id="send-message">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                            </div>
+                        </form>
+                        
+                        
+
+                        
+                    
+                </div>
+            </div>
+
+
+            <script>
+let currentDiscussionId = null;
+
+function chargerMessagesDepuisElement(el) {
+    const discussionId = el.dataset.discussionId;
+    const clientNom = el.dataset.clientNom;
+
+    currentDiscussionId = el.dataset.discussionId;
+    // Met à jour le nom dans le <h3>
+    document.getElementById('user_name').textContent = clientNom;
+
+    // Charge les messages de la discussion
+    chargerMessages(discussionId);
+}
+
+
+
+
+function chargerMessages(discussionId) {
+
+    fetch(`../messages-discussion/${discussionId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+
+            data.forEach(msg => {
+                const isSent = msg.expediteur__first_name === "{{ user.first_name|escapejs }}";
+
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', isSent ? 'sent' : 'received');
+
+                const contentDiv = document.createElement('div');
+                contentDiv.classList.add('message-content');
+
+                const p = document.createElement('p');
+                p.textContent = msg.contenu;
+
+                const timeSpan = document.createElement('span');
+                timeSpan.classList.add('message-time');
+                timeSpan.textContent = new Date(msg.date_envoi).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                contentDiv.appendChild(p);
+                contentDiv.appendChild(timeSpan);
+
+                if (isSent) {
+                    const statusSpan = document.createElement('span');
+                    statusSpan.classList.add('message-status');
+                    statusSpan.innerHTML = '<i class="fas fa-check-double"></i>';
+                    contentDiv.appendChild(statusSpan);
+                }
+
+                messageDiv.appendChild(contentDiv);
+                container.appendChild(messageDiv);
+            });
+
+
+            document.querySelectorAll('.discussion-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Ajouter la classe 'active' à l'élément correspondant à l'ID
+            const el = document.getElementById(`${discussionId}`);
+            if (el) {
+                el.classList.add('active');
+            }
+            document.getElementById('chat-messages').dataset.discussionId = el;
+
+            // Scroll vers le bas
+            container.scrollTop = container.scrollHeight;
+        })
+        .catch(error => console.error("Erreur lors du chargement des messages :", error));
+}
+
+
+//script pour l'envoi de messages
+document.getElementById('message-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    
+
+    fetch(`../envoyer-message/${currentDiscussionId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ contenu: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            input.value = '';
+            chargerMessages(currentDiscussionId);  
+            // Recharge la discussion
+        } else {
+            alert("Erreur lors de l'envoi du message");
+        }
+    })
+    .catch(error => {
+        console.error("Erreur réseau :", error);
+    });
+});
+
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cherche le cookie correspondant au nom
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+
+</script>
+
+
+
+    <script>
+
+    </script>
+
+        {% endblock content %}
+
+
+
+    </div>
+{% block js_import%} 
+<script src="messaging-script.js"></script>
+{% endblock js_import%}
+
+
+
+
+</body>
+</html>

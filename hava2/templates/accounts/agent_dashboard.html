@@ -36,7 +36,7 @@
                             <li>Notifications en temps réel</li>
                             <li>Historique des conversations</li>
                         </ul>
-                        <a href="#" class="btn">Accéder</a>
+                        <a href="{% url "liste_discussions_agent" %}" class="btn">Accéder</a>
                     </div>
                 </div>
 
@@ -68,7 +68,10 @@
                             <li>Suivi des ventes/locations</li>
                             <li>Documentation complète</li>
                         </ul>
-                        <a href="#" class="btn">Accéder</a>
+                        <span class="pers0">
+                            <a href="{% url 'index' %}" class="btn a ">Accéder</a>
+                            <a href="{% url 'ajouter_propriete' %}" class="btn a">ajouter</a>
+                        </span>
                     </div>
                 </div>
             </section>

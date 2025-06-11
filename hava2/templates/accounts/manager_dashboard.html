@@ -46,17 +46,51 @@
             </section>
 
             <section class="features">
-                <div class="card" id="messagerie">
+
+                
+                <div class="card" id="gerer-clients">
                     <div class="card-icon">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-users"></i>
                     </div>
                     <div class="card-content">
-                        <h3>Messagerie</h3>
-                        <p>Gérez vos communications avec les clients et partenaires</p>
+                        <h3>Gérer les Utilisateurs</h3>
+                        <p>Accédez aux informations clients et gérez leurs dossiers</p>
                         <ul>
-                            <li>Messagerie instantanée</li>
-                            <li>Notifications en temps réel</li>
-                            <li>Historique des conversations</li>
+                            <li>Base de données clients</li>
+                            <li>Historique des interactions</li>
+                            <li>Segmentation</li>
+                        </ul>
+                        <a href="{% url "manage_users" %}" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="gerer-agents">
+                    <div class="card-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gérer les agents</h3>
+                        <p>Supervisez les performances et gérez l'équipe d'agents</p>
+                        <ul>
+                            <li>Performance des agents</li>
+                            <li>Attribution des tâches</li>
+                            <li>Gestion des accès</li>
+                        </ul>
+                        <a href="{% url 'liste_agent' %}" class="btn">Accéder</a>
+                    </div>
+                </div>
+
+                <div class="card" id="gerer-bailleurs">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gérer les bailleurs</h3>
+                        <p>Gérez les relations et les propriétés des bailleurs</p>
+                        <ul>
+                            <li>Portefeuille bailleurs</li>
+                            <li>Propriétés associées</li>
+                            <li>Contrats et paiements</li>
                         </ul>
                         <a href="#" class="btn">Accéder</a>
                     </div>
@@ -90,56 +124,13 @@
                             <li>Suivi des ventes/locations</li>
                             <li>Documentation complète</li>
                         </ul>
-                        <a href="#" class="btn">Accéder</a>
-                    </div>
-                </div>
-                <div class="card" id="gerer-clients">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Gérer les Utilisateurs</h3>
-                        <p>Accédez aux informations clients et gérez leurs dossiers</p>
-                        <ul>
-                            <li>Base de données clients</li>
-                            <li>Historique des interactions</li>
-                            <li>Segmentation</li>
-                        </ul>
-                        <a href="{% url "manage_users" %}" class="btn">Accéder</a>
+                        <span class="pers0">
+                            <a href="{% url 'index' %}" class="btn a ">Accéder</a>
+                            <a href="{% url 'ajouter_propriete' %}" class="btn a">ajouter</a>
+                        </span>
                     </div>
                 </div>
 
-                <div class="card" id="gerer-agents">
-                    <div class="card-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Gérer les agents</h3>
-                        <p>Supervisez les performances et gérez l'équipe d'agents</p>
-                        <ul>
-                            <li>Performance des agents</li>
-                            <li>Attribution des tâches</li>
-                            <li>Gestion des accès</li>
-                        </ul>
-                        <a href="#" class="btn">Accéder</a>
-                    </div>
-                </div>
-
-                <div class="card" id="gerer-bailleurs">
-                    <div class="card-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Gérer les bailleurs</h3>
-                        <p>Gérez les relations et les propriétés des bailleurs</p>
-                        <ul>
-                            <li>Portefeuille bailleurs</li>
-                            <li>Propriétés associées</li>
-                            <li>Contrats et paiements</li>
-                        </ul>
-                        <a href="#" class="btn">Accéder</a>
-                    </div>
-                </div>
             </section>
 
             

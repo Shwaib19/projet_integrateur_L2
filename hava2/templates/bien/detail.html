@@ -54,24 +54,33 @@
                     </div>
                 </div>
             </section>
-            
+            {% if user.is_authenticated%}
             <section class="property-actions">
-                <button class="action-button like-button"><i class="fas fa-heart"></i> Liker</button>
+                    <button onclick="toggleFavori({{ propriete.id }})"  class="action-button like-button">
+                        
+                        {%  if est_favori %}
+                        <i class="fas fa-heart-broken"></i>Retirer des favoris</button>                      
+                        {%  else %}
+                         <i class="fas fa-heart"></i> Liker</button>
+                        {%  endif %}
+
+                {% if user.user_type == "AGENT" or user.user_type == "MANAGER" %}
                 <button class="action-button edit-button"><i class="fas fa-edit"></i> Modifier</button>
+                {% else %}
+                {% endif %}
             </section>
+            {% else%}
+            {% endif %}
 
             <section class="property-details">
                 <h2>Belle Maison en Centre-Ville</h2>
+                <h3> Statut: {{propriete.statut}} </h3>
                 <p class="price">Prix: {{propriete.prix}} fcfa</p>
-                <p class="location">{{propriete.localisations}}</p>
+                <p class="location">{{propriete.localisation}}</p>
                 <div class="description">
-                    <h3>{{propriete.option}}</h3>
+                    <h3>Option : {{propriete.option}}</h3>
                     <p>
-                        Superbe maison de 150m² située en plein cœur du centre-ville.
-                        Elle comprend 4 chambres spacieuses, un grand salon lumineux,
-                        une cuisine équipée et un jardin privatif avec terrasse.
-                        Proche de toutes commodités (écoles, commerces, transports).
-                        Idéale pour une famille.
+                        {{propriete.usage}}
                     </p>
                 </div>
                 <div class="features">
@@ -91,10 +100,52 @@
         </main>
         
         <footer>
-            <p>&copy; 2023 Votre Site Immobilier</p>
+            <p>&copy; 2025 Hava</p>
         </footer>
         
     </div>
+
+        <script>
+        function toggleFavori(proprieteId) {
+            fetch(`../favoris/toggle/${proprieteId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message); // Affiche le message (à remplacer par une alerte stylée si tu veux)
+                    location.reload();
+                } else if (data.error) {
+                    alert('Erreur : ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Erreur réseau : ' + error);
+            });
+        }
+
+        // Fonction pour récupérer le token CSRF depuis les cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cherche le cookie correspondant au nom
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        </script>
+
 
     {% endblock content %}
     

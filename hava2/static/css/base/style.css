@@ -232,6 +232,14 @@ body {
     text-align: center;
 }
 
+.content-section h3 {
+    font-weight: 600;
+    color: var(--primary-color); 
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+
 /* Property Grid */
 .property-grid {
     display: grid;

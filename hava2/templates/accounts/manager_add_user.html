@@ -1,0 +1,130 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion des utilisateurs - HAVA{% endblock title %}</title>
+    {% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/accounts/style.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "app": "{% static  'js/accounts/manager_add_user.js' %}"
+        }
+    }
+    </script>
+    {% endblock css%}
+</head>
+<body>
+    
+    {% block content%}
+
+
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>Espace Manager HAVA</h2>
+                    <p>Creer des comptes pour vos agents bailleurs ou client</p>
+                </div>
+
+                <div class="auth-forms-container">
+                    <div class="form-toggle">
+                        <button class="toggle-btn active" data-form="login">Comment utiliser</button>
+                        <button class="toggle-btn " data-form="signup">Creation</button>
+                    </div>
+
+                    <div class="forms-slider-viewport">
+                        <div id="login-form" class="auth-form">
+                            
+                                {% if messages %}
+                            
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li class="{{ message.tags }}">{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                    <h3>Ici vous pouvez ajouter des comptes pour vos utilisateur (client, agent , bailleur)</h3>
+                                {% endif %}
+                        </div>
+
+                        <div id="signup-form" class="auth-form">
+                            <h3>Création de compte</h3>
+                            <form method="POST" class="auth-form-content">
+                                {% csrf_token %}
+                                
+                                
+                                <div class="input-group">
+                                    <i class="fas fa-user"></i>
+                                    {{ register_form.first_name }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-user"></i>
+                                    {{ register_form.last_name }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope"></i>
+                                    {{ register_form.email }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-phone"></i>
+                                    {{ register_form.phone }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-home"></i>
+                                    {{ register_form.adresse }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-user"></i>
+                                    {{ register_form.user_type }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-lock"></i>
+                                    {{ register_form.password1 }}
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-lock"></i>
+                                    {{ register_form.password2}}
+                                </div>
+
+                                <button type="submit" name="register_submit" class="submit-btn">Créer le compte</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-benefits">
+                    <h3>N'oubliez pas :</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> De Renseignez tous les champs dans la mesure du possible</li>
+                        <li><i class="fas fa-check-circle"></i> De Verifié les que les infos entrées sont conforme a ceux fournis par l'agent ou le bailleur</li>
+                        <li><i class="fas fa-check-circle"></i> De Notez le mot de passe dans un endroit sûr</li>
+                        <li><i class="fas fa-check-circle"></i> De Selectionner le type de compte en fonction que ce soit un client , agent ou un bailleur.</li>
+                        <li><i class="fas fa-check-circle"></i> Que pour le type client est Selectionner par defaut</li>
+                    </ul>
+                </div>
+            </div>
+
+
+        {%endblock content%}
+
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    {% block js_import%} 
+    <script type="module">
+        import { init } from 'app';
+        init();
+    </script>
+    <!--pour importer d'autre script-->{% endblock js_import%}
+</body>
+</html>

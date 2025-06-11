@@ -20,7 +20,13 @@
     box-sizing: border-box;
 }
 
+.a{
 
+    width: 49%;
+}
+.pers0{
+    padding: auto;
+}
 
 .container {
     max-width: 1200px;

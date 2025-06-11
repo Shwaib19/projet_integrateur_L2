@@ -42,11 +42,12 @@
         {% endif %}
         <nav>
             <ul>
-                <li><a href=" {% url 'index' %} ">Accueil</a></li>
-                
+                <li><a href=" {% url "redirect_user" %} ">Accueil</a></li>
+                 
 
-                {% if user.is_authenticated %}
-                <li><a href="">Mesfavoris</a></li>
+                {% if  user.user_type == "CLIENT" %}
+                <li><a href="{% url "mes_favoris" %}">Mes Favoris</a></li>
+                <li><a href="{% url "discussions_client" %}">Messagerie</a></li>
                 {% else %}
                 {% endif %}
 
@@ -56,7 +57,6 @@
 
 
                 {% if user.is_authenticated %}
-                <li><a href="#">Messagerie</a></li>
                 <li><a href=" {% url 'logout' %} " class="login-btn">Deconnexion</a></li>
                 {% else %}
                 <li><a href=" {% url 'login' %}  " class="login-btn">Connexion / Inscription</a></li>

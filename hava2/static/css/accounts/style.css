@@ -345,6 +345,16 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.input-group select {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
 .input-group input:focus {
     outline: none;
     border-color: var(--primary-color);

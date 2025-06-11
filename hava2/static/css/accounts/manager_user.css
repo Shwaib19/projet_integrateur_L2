@@ -328,12 +328,12 @@ body {
     text-transform: uppercase;
 }
 
-.role-MANAGER {
+.role-AGENT {
     background-color: #e3f2fd;
     color: #0d47a1;
 }
 
-.role-AGENT {
+.role-BAILLEUR {
     background-color: #e8f5e9;
     color: #1b5e20;
 }
@@ -341,6 +341,11 @@ body {
 .role-CLIENT {
     background-color: #f5f5f5;
     color: #616161;
+}
+
+.role-MANAGER {
+    background-color: #ff6f002b;
+    color: #4e2d15;
 }
 
 .status-active {

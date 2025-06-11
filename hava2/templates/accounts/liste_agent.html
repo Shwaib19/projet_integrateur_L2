@@ -1,0 +1,129 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion des Agent - HAVA{% endblock title %}</title>
+    {% block css %} 
+    <link rel="stylesheet" href="{% static "css/accounts/liste_agent.css" %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    {% endblock css %}
+    {% block js_map%}
+    <script type="importmap">
+      {
+        "imports": {
+          "script": "{% static 'js/accounts/liste_agent.js' %}"
+        }
+      }
+    </script>
+    {% endblock js_map%}
+</head>
+<body>
+    {% block content%}
+    <div class="container">
+        <header>
+            <h1>Tableau de Bord Manager</h1>
+        </header>
+        <!-- Section intro/hero added here -->
+        <div class="intro-text">
+            <p>Bienvenue sur votre tableau de bord. Gérez efficacement les agents de votre entreprise et consultez les clients associés à chacun d'eux. Utilisez les outils pour ajouter ou retirer des clients selon les besoins.</p>
+        </div>
+        <main>
+            <section class="agents-section">
+                <h2>Agents de l'entreprise</h2>
+                <div id="agent-list" class="list-container agent-list">
+                    {% for agent in agents %}
+                    <div class="agent-item " data-agent-id="{{agent.user.id}}" data-agent-name="{{agent.user.last_name}} {{agent.user.first_name}}">
+                        {{agent.user.last_name}} {{agent.user.first_name}}</div>
+                    {% endfor %}
+
+                    
+                </div>
+            </section>
+            <section class="clients-section">
+                <h2>Clients de l'Agent <span id="agent_name"> </span></h2>
+                <div id="client-list" class="list-container client-list">
+                    <!-- The "Add Client" button and initial message will be added by JavaScript -->
+                    <!-- Clients will be loaded here by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const agentItems = document.querySelectorAll('.agent-item');
+    const clientList = document.getElementById('client-list');
+
+    agentItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const agentId = item.dataset.agentId;
+            const agentName= item.dataset.agentName
+
+            fetch(`/account/manager/clients/${agentId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    clientList.innerHTML = ''; // Vide l'ancienne liste
+                    const agent_name = document.getElementById('agent_name');
+                            agent_name.textContent = `${agentName}`;
+                        
+                    if (data.clients.length > 0) {
+                        data.clients.forEach(client => {
+                            
+
+                            const div = document.createElement('div');
+                            div.classList.add('client-item');
+
+                            const span = document.createElement('span');
+                            span.innerHTML = `<strong>${client.nom} ${client.prenom}: </strong> ${client.email}`; // tu peux remplacer ce texte par un vrai champ
+
+                            const button = document.createElement('button');
+                            button.classList.add('remove-button');
+                            button.dataset.clientId = client.id || '';
+                            button.textContent = 'Retirer';
+
+                            div.appendChild(span);
+                            div.appendChild(button);
+                            clientList.appendChild(div);
+                        });
+                    } else {
+                        clientList.innerHTML = '<em>Aucun client affilié</em>';
+                    }
+                });
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('click', function (event) {
+    if (event.target.matches('.remove-button')) {
+        const button = event.target;
+        const clientId = button.dataset.clientId;
+
+        fetch(`/account/manager/clients/retirer/${clientId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.closest('.client-item').remove();
+                } else {
+                    alert('Erreur : ' + (data.error || 'Impossible de retirer le client.'));
+                }
+            });
+    }
+});
+</script>
+
+
+    {% endblock content%}
+
+    {% block js_import%} 
+    <script type="module" src="{% static 'js/accounts/liste_agent.js'%}"></script>
+    {% endblock js_import%}
+    
+</body>
+</html>
+
+

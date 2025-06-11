@@ -18,4 +18,10 @@ class CustomUserAdmin(UserAdmin):
 # Enregistrement des modèles
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(AgentProfile)
-admin.site.register(ClientProfile)
+from django.contrib import admin
+from .models import ClientProfile
+
+@admin.register(ClientProfile)
+class ClientProfileAdmin(admin.ModelAdmin):
+    filter_horizontal = ('favoris',)  # Rend l’interface claire avec deux colonnes (non liées / liées)
+

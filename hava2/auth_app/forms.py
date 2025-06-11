@@ -1,9 +1,10 @@
 # forms.py
+import random
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate
-from .models import CustomUser, AgentProfile, ClientProfile
-
+from .models import CustomUser, AgentProfile, ClientProfile,BailleurProfile
+from messenger.models import Discussion
 class CustomUserCreationForm(UserCreationForm):
     """
     Formulaire d'inscription personnalisé pour CustomUser (utilise email au lieu de username)
@@ -52,10 +53,24 @@ class CustomUserCreationForm(UserCreationForm):
             'placeholder': 'Adresse (optionnel)'
         })
     )
+    
+    user_type = forms.ChoiceField(
+        required=False,
+        choices= (
+        ('CLIENT', 'Client'),
+        ('AGENT', 'Agent'),
+        ('BAILLEUR', 'Bailleur'),
+        ('MANAGER', 'Manager'),
+    ),
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'placeholder': 'Adresse (optionnel)'
+        })
+    )
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'first_name', 'last_name', 'phone', 'adresse', 'password1', 'password2')
+        fields = ('email', 'first_name', 'last_name', 'phone', 'adresse','user_type', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -104,14 +119,40 @@ class CustomUserCreationForm(UserCreationForm):
         
         return user
 
+
     def create_user_profile(self, user):
         """
         Créer automatiquement le profil selon le type d'utilisateur
         """
         if user.user_type == 'AGENT':
             AgentProfile.objects.get_or_create(user=user)
+
         elif user.user_type == 'CLIENT':
-            ClientProfile.objects.get_or_create(user=user)
+            client_profile, created = ClientProfile.objects.get_or_create(user=user)
+
+        if created:
+            # Choix aléatoire d'un agent
+            agents = CustomUser.objects.filter(user_type='AGENT')
+            if agents.exists():
+                selected_agent = random.choice(agents)
+                
+                client_profile.agent = selected_agent
+                client_profile.save()
+
+                # 🔥 Obtenir le profil agent lié à l’utilisateur agent
+                try:
+                    p_agent = selected_agent.agentprofile  # via OneToOneField
+                except AgentProfile.DoesNotExist:
+                    p_agent = None
+                
+                if p_agent:
+                    Discussion.objects.get_or_create(
+                        id_client=client_profile,
+                        id_agent=p_agent
+                    )
+        
+        elif user.user_type == 'BAILLEUR':
+            created = BailleurProfile.objects.get_or_create(user=user)
 
 class CustomAuthenticationForm(AuthenticationForm):
     """
@@ -156,22 +197,6 @@ class CustomAuthenticationForm(AuthenticationForm):
 
         return self.cleaned_data
 
-class AgentProfileForm(forms.ModelForm):
-    """
-    Formulaire pour le profil Agent
-    """
-    specialty = forms.CharField(
-        max_length=100,
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Votre spécialité'
-        })
-    )
-
-    class Meta:
-        model = AgentProfile
-        fields = ['specialty']
 
 class ClientProfileForm(forms.ModelForm):
     """
@@ -277,3 +302,36 @@ class UserUpdateForm(forms.ModelForm):
             user.save()
         
         return user
+    
+
+class ClientModificationForm(forms.ModelForm):
+
+    class Meta:
+        model = ClientProfile
+        fields = ['agent']  # ou ajoute d’autres champs spécifiques si besoin
+
+class CustomUserForm(forms.ModelForm):
+    
+    first_name = forms.CharField(
+    max_length=30,
+    label='Prenom',
+    required=True,
+    widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    })
+    )
+    
+    last_name = forms.CharField(
+        max_length=30,
+        label='Nom',
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    
+    
+    
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'adresse','phone']

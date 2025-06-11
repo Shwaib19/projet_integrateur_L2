@@ -27,20 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Basic action button listeners (can be expanded)
-    const likeButton = document.querySelector('.like-button');
-    const editButton = document.querySelector('.edit-button');
 
-    likeButton.addEventListener('click', () => {
-        alert('Propriété aimée ! (Action fictive)');
-        // Add actual like logic here (e.g., send to server)
-    });
 
-    editButton.addEventListener('click', () => {
-        alert('Modifier la propriété (Action fictive)');
-        // Add actual edit logic here (e.g., redirect to edit page)
-    });
-    
+
     // Add animation when page loads
     const propertyDetails = document.querySelector('.property-details');
     const propertyActions = document.querySelector('.property-actions');

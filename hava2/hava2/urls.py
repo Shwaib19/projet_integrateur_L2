@@ -23,4 +23,5 @@ urlpatterns = [
     path('account/', include("auth_app.urls")),
     path('', include("welcome.urls")),
     path('propriete/', include("bien_app.urls")),
+    path('messenger/', include("messenger.urls")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
