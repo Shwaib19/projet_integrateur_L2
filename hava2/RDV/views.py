@@ -61,7 +61,7 @@ def mes_rendez_vous(request):
     
 
 def annuler_rendez_vous(request, rdv_id):
-    rdv = get_object_or_404(RendezVous, id=rdv_id, client=request.user.clientprofile)
+    rdv = get_object_or_404(RendezVous, id=rdv_id)
 
     if rdv.statut == 'ANNULE':
         messages.warning(request, "Ce rendez-vous a déjà été annulé.")

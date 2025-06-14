@@ -1,0 +1,66 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<html lang="fr">
+<head>
+
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agence Immobilière HAVA{% endblock title %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/welcome/service.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    {% endblock css %}
+</head>
+<body>
+    {% block content %}
+    <main>
+        <section class="hero" style ="
+        background: linear-gradient(rgba(45, 58, 81, 0.7), rgba(79, 98, 125, 0.6)) ,url('{% static 'img/service/hero-background.png' %}') no-repeat center center/cover;
+    color: var(--light-text-color);
+    text-align: center;
+    padding: 6rem 1rem;
+        
+        ">
+            <div class="container">
+                <h1>Nos Services Immobiliers</h1>
+                <p>Des solutions sur mesure pour acheter, vendre ou gérer votre bien en toute sérénité.</p>
+            </div>
+        </section>
+
+        <section class="services-grid">
+            <div class="property-grid services-grid">
+                <div class="service-card animated-card">
+                    
+                    <h2>Achat de Propriété</h2>
+                    <p>Nous vous accompagnons à chaque étape pour trouver et acquérir la maison de vos rêves, en respectant votre budget et vos critères.</p>
+                </div>
+                <div class="service-card animated-card">
+                    
+                    <h2>Vente de Propriété</h2>
+                    <p>Profitez de notre expertise pour vendre votre bien au meilleur prix et dans les meilleurs délais. Estimation offerte.</p>
+                </div>
+                <div class="service-card animated-card">
+                    
+                    <h2>Location & Gestion</h2>
+                    <p>Solutions complètes pour les propriétaires bailleurs et les locataires. Nous nous occupons de tout, de la recherche à la gestion quotidienne.</p>
+                </div>
+                <div class="service-card animated-card">
+                    
+                    <h2>Estimation Gratuite</h2>
+                    <p>Obtenez une évaluation précise et fiable de la valeur de votre bien immobilier, réalisée par nos experts locaux.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    {% endblock content %}
+    
+{% block js_import%} 
+    <script src="{% static 'js/welcome/script.js'%}"></script>
+{% endblock js_import%}
+    
+</body>
+</html>

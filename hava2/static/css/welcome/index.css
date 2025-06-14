@@ -54,19 +54,7 @@ body {
     box-shadow: 2px 0 10px rgba(0,0,0,0.05); 
 }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    padding-left: 0.5rem; 
-}
 
-.logo {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    object-fit: contain;
-}
 
 .user-info {
     margin-bottom: 2rem; /* Add spacing below user info */

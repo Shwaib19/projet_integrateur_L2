@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from .forms import ClientModificationForm, CustomUserForm
 from bien_app.models import Propriete
+from RDV.models import RendezVous
 
 
 def auth_view(request):
@@ -119,15 +120,24 @@ def manager_dashboard(request):
         messages.error(request, 'Accès non autorisé.')
         return redirect('redirect_user')
     
-    agents = CustomUser.objects.filter(user_type='AGENT')
-    clients = CustomUser.objects.filter(user_type='CLIENT')
+    User_nb = CustomUser.objects.all().count()
+    agents = CustomUser.objects.filter(user_type='AGENT').count()
+    managers = CustomUser.objects.filter(user_type='MANAGER').count()
+    clients = CustomUser.objects.filter(user_type='CLIENT').count()
+    bailleurs = CustomUser.objects.filter(user_type='BAILLEUR').count()
+    proprietes = Propriete.objects.all().count()
+
     
     context = {
         'user': request.user,
-        'agents': agents,
-        'clients': clients,
-        'agents_count': agents.count(),
-        'clients_count': clients.count(),
+        'user_count': User_nb,
+        'agents_count': agents,
+        'clients_count': clients,
+        'managers_count': managers,
+        'bailleurs_count': bailleurs,
+        'proprietes_count': proprietes, 
+   
+           
     }
     
     return render(request, 'accounts/manager_dashboard.html', context)
@@ -353,3 +363,88 @@ def proprietes_du_bailleur(request):
         proprietes = []
 
     return render(request, 'accounts/bailleur.html', {'proprietes': proprietes})
+
+
+@login_required
+def gestion_bailleurs(request):
+    if not hasattr(request.user, 'managerprofile'):
+        return redirect('home')  # ou page d'erreur
+
+    bailleurs = BailleurProfile.objects.all().select_related('user')
+
+    return render(request, 'manager/gestion_bailleurs.html', {
+        'bailleurs': bailleurs,
+    })
+
+
+@login_required
+def liste_rdv_agents(request):
+    if request.user.user_type !="MANAGER":
+        return redirect('index')
+
+    rdvs_agents = RendezVous.objects.select_related('agent').order_by('-date_souhaitee')
+
+    return render(request, 'RDV/mes_rdv.html', {
+        'rendez_vous': rdvs_agents,
+    })
+
+
+
+
+
+
+
+##
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.db import models
+from django.http import HttpResponse
+
+##
+
+
+@login_required
+
+def generer_statistiques_pdf(request):
+    total_props = Propriete.objects.count()
+    total_vente = Propriete.objects.filter(option='À Vendre').count()
+    total_location = Propriete.objects.filter(option='À Louer').count()
+
+    total_bailleurs = CustomUser.objects.filter(user_type='BAILLEUR').count()
+    total_agents = CustomUser.objects.filter(user_type='AGENT').count()
+    total_clients = CustomUser.objects.filter(user_type='CLIENT').count()
+
+    total_rdv = RendezVous.objects.count()
+    rdv_confirmes = RendezVous.objects.filter(statut='CONFIRMÉ').count()
+
+    moyenne_prix = Propriete.objects.aggregate(models.Avg('prix'))['prix__avg'] or 0
+
+    localisations = (
+        Propriete.objects.values('localisation')
+        .annotate(nombre=models.Count('id'))
+        .order_by('-nombre')
+    )
+
+    context = {
+        'total_props': total_props,
+        'total_vente': total_vente,
+        'total_location': total_location,
+        'total_bailleurs': total_bailleurs,
+        'total_agents': total_agents,
+        'total_clients': total_clients,
+        'total_rdv': total_rdv,
+        'rdv_confirmes': rdv_confirmes,
+        'moyenne_prix': moyenne_prix,
+        'localisations': localisations,
+        'user': request.user,
+    }
+
+    template = get_template('accounts/etat.html')
+    html = template.render(context)
+    response = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
+
+    if not pdf.err:
+        return HttpResponse(response.getvalue(), content_type='application/pdf')
+    return HttpResponse('Erreur lors de la génération du PDF', status=500)

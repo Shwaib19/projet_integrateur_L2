@@ -17,4 +17,7 @@ urlpatterns = [
     path('manager/clients/retirer/<int:client_id>/', views.retirer_client, name='retirer_client'),
     path('modifier/<int:client_id>/', views.modifier_client, name='modifier_client'),
     path('mes_proprietes/', views.proprietes_du_bailleur, name='mes_proprietes'),
+    path('manager/statistiques/pdf/', views.generer_statistiques_pdf, name='generer_statistiques_pdf'),
+    path('manager/rdv-agents/', views.liste_rdv_agents, name='liste_rdv_agents'),
+
 ]

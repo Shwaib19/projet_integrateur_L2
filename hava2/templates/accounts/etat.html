@@ -1,0 +1,66 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+<link rel="stylesheet" href="{% static 'css/accounts/etat.css' %}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: left;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <img src="/logo.png" alt="Logo">
+            <div class="header-titles">
+                <h1>Rapport Statistique</h1>
+                <h2>Généré par {{ user.get_full_name }}</h2>
+            </div>
+        </div>
+
+        <p><strong>Total de propriétés :</strong> {{ total_props }}</p>
+        <p><strong>À vendre :</strong> {{ total_vente }}</p>
+        <p><strong>À louer :</strong> {{ total_location }}</p>
+        <p><strong>Moyenne des prix :</strong> {{ moyenne_prix|floatformat:0 }} FCFA</p>
+
+        <p><strong>Total de bailleurs :</strong> {{ total_bailleurs }}</p>
+        <p><strong>Total d’agents :</strong> {{ total_agents }}</p>
+        <p><strong>Total de clients :</strong> {{ total_clients }}</p>
+
+        <p><strong>Total de rendez-vous :</strong> {{ total_rdv }}</p>
+        <p><strong>Rendez-vous confirmés :</strong> {{ rdv_confirmes }}</p>
+
+        <h3>Répartition par localisation</h3>
+        <table>
+            <thead>
+                <tr><th>Localisation</th><th>Nombre de propriétés</th></tr>
+            </thead>
+            <tbody>
+                {% for loc in localisations %}
+                    <tr>
+                        <td>{{ loc.localisation }}</td>
+                        <td>{{ loc.nombre }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> <!-- Close container -->
+</body>
+</html>

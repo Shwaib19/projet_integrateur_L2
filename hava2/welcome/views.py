@@ -6,3 +6,10 @@ def index(request):
     return render(request, 'welcome/index.html', {
         'proprietes': proprietes
     })
+def service(request):
+    return render(request, 'welcome/service.html')
+
+def contact(request):
+    return render(request, 'welcome/contact.html')
+def apropos(request):
+    return render(request, 'welcome/apropos.html')

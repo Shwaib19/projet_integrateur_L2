@@ -128,6 +128,11 @@
                     <h3>{{ r.propriete.type }} - {{ r.propriete.localisation }}</h3>
                 <span>
                     <a href="{% url 'propriete_detail' r.propriete.pk %}" class="details-btn">Voir propriete</a>
+                    {% if user.user_type == "MANAGER" %}
+                    <p>{{r.client}}</p>
+                    
+                    <p>{{r.agent}}</p>
+                    {% endif%}
                     <p class="date-time">Date: {{r.date_souhaitee}}</p>
                     <p class="date-time">Date Confirmer: {{r.date_confirmee}}</p>
                     <p class="date-time">Statut: {{r.statut}}</p>
@@ -135,7 +140,7 @@
                     
 
                         <p>Note du client :{{r.commentaire_client}}</p>
-
+                    
                         <p>Note de l'agent : {{r.commentaire_agent}}</p>
                     <span class="pers0">
                     {% if r.statut != "ANNULE" %}

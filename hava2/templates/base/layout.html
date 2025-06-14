@@ -30,8 +30,7 @@
     
     <aside class="sidebar-menu" id="sidebarMenu">
         <div class="logo-container">
-            <img src="logo.png" alt="Agence Immobilière Logo" class="logo">
-            <span class="agency-name">HAVA</span>
+            <img src="{% static "img/logo.png" %}" alt="Agence Immobilière Logo" class="logo">
         </div>
         {% if user.is_authenticated %}
         <div class="user-info hidden" id="sidebarUserInfo">
@@ -58,9 +57,9 @@
                 {% endif %}
 
 
-                <li><a href="#services">Nos Services</a></li>
-                <li><a href="#about">À Propos</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="{% url 'service' %}">Nos Services</a></li>
+                <li><a href="{% url 'apropos' %}">À Propos</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
 
 
                 {% if user.is_authenticated %}
@@ -74,7 +73,7 @@
         <footer class="sidebar-footer">
 
         
-            <p>&copy; 2024 HAVA</p>
+            <p>&copy; 2025 HAVA</p>
         </footer>
     </aside>
 
