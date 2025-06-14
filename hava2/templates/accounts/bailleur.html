@@ -1,0 +1,57 @@
+{% extends "base/layout.html" %}
+{% load static%}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Espace Bailleur - Tableau de Bord{% endblock title %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/accounts/bailleur.css' %}">
+    {% endblock css %}
+ 
+</head>
+{%block content%}
+    <div class="hero">
+        <h1>Bienvenue dans votre Espace Bailleur</h1>
+        <p>Gérez vos propriétés immobilières en toute simplicité. Visualisez, modifiez ou supprimez vos annonces à tout moment.</p>
+    </div>
+
+    <div class="container">
+        <h1>Mes Propriétés Actuelles</h1>
+
+        <div class="property-list">
+            <!-- Exemple de propriété -->
+             {% for propriete in proprietes%}
+
+        
+             <div class="property-item">
+                <img src="{{ propriete.images.first.image.url }}" alt="Image de l'appartement">
+                <h2>{{propriete.usage}}</h2>
+                <p><strong>Localisation :</strong> {{propriete.localisation}}</p>
+                <p><strong>Description :</strong> Bel appartement lumineux de 3 pièces avec balcon.</p>
+                <p><strong>Statut :</strong> {{propriete.statut}}</p>
+                <div class="button-container">
+                    <a href='{% url "modifier_propriete" propriete.pk %}'>
+                        <button class="action-button modify-button">Modifier</button>
+                    </a>
+
+                    <a href='{% url "supprimer_image" propriete.pk %}' class="btn a" >
+                    <button class="action-button delete-button">Supprimer</button>
+                    </a>
+                </div>
+            </div>
+        
+            {% endfor%}
+
+        </div>
+
+        <!-- Button to add a new property -->
+        <a href="{% url 'ajouter_propriete' %}" class="btn a">
+            <button href="{% url 'ajouter_propriete' %}" class="add-property-button">Ajouter une Propriété</button>
+        </a>
+
+    </div>
+{%endblock content%}
+    {% block js_import%}<script src="{% static "js/bien/ajouter.js" %}"></script>{% endblock js_import%}
+</html>

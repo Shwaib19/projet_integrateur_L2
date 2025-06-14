@@ -1,0 +1,137 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}proprietes{% endblock title %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static "css/bien/ajouter.css" %}" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% endblock css %}
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-building"></i> Gestion Immobilière</h1>
+    </header>
+    {% block content %}
+    <main>
+        <div class="container">
+            <h2>Ajouter une nouvelle propriété</h2>
+                <form method="POST"  enctype="multipart/form-data" id="propertyForm" action="{% url "modifier_propriete" propriete.pk %}" >
+                    
+                <div class="form-section">
+                    <h3>Modifier les infos</h3>
+                    {% for message in messages %}
+                                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    
+                    <div class="form-section">
+                    <h3>Images</h3>
+                    <div class="form-group">
+                        <label for="images">Télécharger des images (max 5)*</label>
+                        <div class="file-upload">
+                            {{ image_form.image1 }}
+
+
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir Image principale</label>
+                        </div>
+                        <div class="file-upload">
+
+                            {{ image_form.image2 }}
+
+
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir image secondaire</label>
+                        </div>
+                        <div class="file-upload">
+
+                            {{ image_form.image3 }}
+
+
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir image secondaire</label>
+                        </div>
+
+                        <div class="file-upload">
+
+                            {{ image_form.image4 }}
+
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir image secondaire</label>
+                        </div>
+                        <p class="hint">Formats acceptés: JPG, PNG, GIF. Taille max: 5 Mo par image.</p>
+                        <div id="imagePreviewContainer" class="image-preview-container"></div>
+                    </div>
+                </div>
+                    
+
+                
+                
+                <div class="form-actions">
+                    
+                    <button type="submit" class="btn btn-primary">Enregistrer la propriété</button>
+                </div>
+                </div>
+
+            </form>
+
+            <div class="form-section">
+
+                        <h3>Images existantes :</h3>
+                        <ul>
+                            
+                            {% for img in images_existantes %}
+                                <li>
+                                    <img src="{{ img.image.url }}" width="150" alt="Image propriété">
+                                    <form method="post" action="{% url 'supprimer_image' img.pk %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        
+                                        <button type="submit">Supprimer</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+    
+                </div>
+
+        </div>
+    </main>
+
+
+    {% endblock content %}
+
+    <!-- Modal de confirmation -->
+       <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h3><i class="fas fa-check-circle"></i> Propriété enregistrée avec succès</h3>
+            </div>
+            <div class="modal-body">
+                <p>La propriété a été ajoutée à votre catalogue.</p>
+                <div class="property-summary">
+                    <div class="property-summary-image">
+                        <img id="summaryImage" src="" alt="Image de la propriété">
+                    </div>
+                    <div class="property-summary-details">
+                        <h4 id="summaryTitle"></h4>
+                        <p id="summaryPrice"></p>
+                        <p id="summaryLocation"></p>
+                        <p><small id="summaryUsage"></small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="addAnotherBtn">Ajouter une autre propriété</button>
+                <button class="btn btn-primary" id="viewListBtn">Voir la liste des propriétés</button>
+            </div>
+        </div>
+    </div>
+
+
+    {% block js_import%}<script src="{% static "js/bien/ajouter.js" %}"></script>{% endblock js_import%}
+
+
+</body>
+</html>

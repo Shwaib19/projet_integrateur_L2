@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'welcome',
     'bien_app',
     'messenger',
+    'RDV',
     
 ]
 

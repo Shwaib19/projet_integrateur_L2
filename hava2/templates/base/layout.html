@@ -42,14 +42,21 @@
         {% endif %}
         <nav>
             <ul>
-                <li><a href=" {% url "redirect_user" %} ">Accueil</a></li>
+                
                  
-
-                {% if  user.user_type == "CLIENT" %}
-                <li><a href="{% url "mes_favoris" %}">Mes Favoris</a></li>
-                <li><a href="{% url "discussions_client" %}">Messagerie</a></li>
-                {% else %}
+                {% if user.is_authenticated %}
+                <li><a href=" {% url "redirect_user" %} ">Accueil</a></li>
+                    {% if user.user_type == "CLIENT" %}
+                        <li><a href="{% url "mes_favoris" %}">Mes Favoris</a></li>
+                        <li><a href="{% url "discussions_client" %}">Messagerie</a></li>
+                        <li><a href="{% url "mes_rdv" %}">Rendez-vous</a></li>
+                    {% elif user.user_type == "AGENT" %}
+                        <li><a href="{% url "rdv_agent" %}">Rendez-vous</a></li>
+                    {% endif %}
+                {%else%}
+                <li><a href=" {% url "index" %} ">Accueil</a></li>
                 {% endif %}
+
 
                 <li><a href="#services">Nos Services</a></li>
                 <li><a href="#about">À Propos</a></li>

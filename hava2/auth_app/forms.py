@@ -127,32 +127,34 @@ class CustomUserCreationForm(UserCreationForm):
         if user.user_type == 'AGENT':
             AgentProfile.objects.get_or_create(user=user)
 
+        elif user.user_type == 'BAILLEUR':
+            created = BailleurProfile.objects.get_or_create(user=user)
+
         elif user.user_type == 'CLIENT':
             client_profile, created = ClientProfile.objects.get_or_create(user=user)
 
-        if created:
-            # Choix aléatoire d'un agent
-            agents = CustomUser.objects.filter(user_type='AGENT')
-            if agents.exists():
-                selected_agent = random.choice(agents)
-                
-                client_profile.agent = selected_agent
-                client_profile.save()
+            if created:
+                # Choix aléatoire d'un agent
+                agents = CustomUser.objects.filter(user_type='AGENT')
+                if agents.exists():
+                    selected_agent = random.choice(agents)
+                    
+                    client_profile.agent = selected_agent
+                    client_profile.save()
 
-                # 🔥 Obtenir le profil agent lié à l’utilisateur agent
-                try:
-                    p_agent = selected_agent.agentprofile  # via OneToOneField
-                except AgentProfile.DoesNotExist:
-                    p_agent = None
-                
-                if p_agent:
-                    Discussion.objects.get_or_create(
-                        id_client=client_profile,
-                        id_agent=p_agent
-                    )
+                    # 🔥 Obtenir le profil agent lié à l’utilisateur agent
+                    try:
+                        p_agent = selected_agent.agentprofile  # via OneToOneField
+                    except AgentProfile.DoesNotExist:
+                        p_agent = None
+                    
+                    if p_agent:
+                        Discussion.objects.get_or_create(
+                            id_client=client_profile,
+                            id_agent=p_agent
+                        )
         
-        elif user.user_type == 'BAILLEUR':
-            created = BailleurProfile.objects.get_or_create(user=user)
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     """

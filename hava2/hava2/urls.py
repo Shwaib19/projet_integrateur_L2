@@ -24,4 +24,6 @@ urlpatterns = [
     path('', include("welcome.urls")),
     path('propriete/', include("bien_app.urls")),
     path('messenger/', include("messenger.urls")),
+    path('planing/', include("RDV.urls")),
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

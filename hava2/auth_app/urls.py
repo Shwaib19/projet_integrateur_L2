@@ -4,7 +4,6 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.redirect_user, name="login"),
     path("login/", views.auth_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("agent/", views.agent_dashboard, name="agent_dashboard"),
@@ -17,4 +16,5 @@ urlpatterns = [
     path('manager/clients/<int:agent_id>/', views.clients_par_agent, name='clients_par_agent'),
     path('manager/clients/retirer/<int:client_id>/', views.retirer_client, name='retirer_client'),
     path('modifier/<int:client_id>/', views.modifier_client, name='modifier_client'),
+    path('mes_proprietes/', views.proprietes_du_bailleur, name='mes_proprietes'),
 ]

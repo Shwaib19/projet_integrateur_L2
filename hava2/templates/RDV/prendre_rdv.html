@@ -1,0 +1,31 @@
+{% extends "base/layout.html" %}
+{% load static%}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Rendez-vous{% endblock title %}</title>
+
+    {% block css %}
+    <link rel="stylesheet" href="{% static "css/RDV/style.css" %}" >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    {% endblock css %}
+</head>
+
+    {% block content%}
+<body>
+    <div class="appointment-container">
+        <h1>Prendre Rendez-vous</h1>
+        <form id="appointmentForm" method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            
+            <button type="submit">Demander un Rendez-vous</button>
+        </form>
+        <div id="confirmationMessage" class="confirmation-message"></div>
+    </div>
+</body>
+    {% endblock content%}
+
+</html>

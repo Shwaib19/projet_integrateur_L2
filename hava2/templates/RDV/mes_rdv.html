@@ -1,0 +1,160 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agence Immobilière HAVA{% endblock title %}</title>
+    {% block css %}
+    <style>
+        :root {
+            --primary-color: #2D3A51; /* Deep Slate Blue */
+            --secondary-color: #4F627D; /* Muted Blue-Grey */
+            --accent-color: #E5A44A; /* Warm Gold */
+            --accent-color-hover: #CC8D39; /* Darker Gold */
+            --text-color: #333333; /* Very Dark Grey */
+            --light-text-color: #FFFFFF;
+            --bg-color: #F4F7F6; /* Light Cool Grey */
+            --card-bg: #FFFFFF;
+            --border-color: #DDE2E5; /* Light Grey */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Changed font */
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--card-bg); /* Changed header background */
+            color: var(--primary-color); /* Changed header text color */
+            padding: 1.5rem 20px; /* Adjusted padding */
+            text-align: left; /* Aligned text left */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
+            margin-bottom: 30px; /* Increased margin below header */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em; /* Adjusted font size */
+        }
+
+        .container {
+            max-width: 960px; /* Increased max-width */
+            margin: 0 auto;
+            padding: 0 20px; /* Adjusted padding */
+            /* Removed container specific background, shadow, border, etc. to let cards float */
+        }
+
+        .appointment-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted minmax */
+            gap: 20px; /* Gap between cards */
+        }
+
+        .appointment-card {
+            background-color: var(--card-bg); /* Card background */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px; /* Increased padding inside card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* More prominent shadow for card effect */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added smooth transition */
+            display: flex; /* Use flexbox for internal layout if needed later */
+            flex-direction: column;
+        }
+
+        .appointment-card:hover {
+            transform: translateY(-5px); /* More noticeable lift effect */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
+        }
+
+        .appointment-card h3 {
+            margin-top: 0;
+            color: var(--primary-color); /* Subject in primary color */
+            font-size: 1.3em; /* Increased font size */
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px; /* Increased padding below title */
+            margin-bottom: 15px; /* Increased margin below title */
+        }
+
+        .appointment-card p {
+            margin: 8px 0; /* Increased margin between paragraphs */
+            font-size: 0.95em; /* Slightly larger font size */
+        }
+
+        .appointment-card .date-time {
+            font-weight: bold;
+            color: var(--secondary-color); /* Date/Time in secondary color */
+        }
+
+        .appointment-card .location {
+            color: var(--accent-color); /* Location in accent color */
+            font-style: italic; /* Italicize location */
+        }
+
+        .appointment-card p:last-child {
+            margin-bottom: 0; /* Remove bottom margin from the last paragraph */
+        }
+
+        /* Style for message when no appointments */
+        .container > p {
+             text-align: center;
+             color: var(--secondary-color);
+             font-size: 1.1em;
+             padding-top: 30px;
+        }
+
+    </style>
+    {% endblock css %}
+</head>
+<body>
+    
+    {% block content %}
+    <header>
+        <div class="container">
+            <h1>Mes Rendez-vous</h1>
+        </div>
+    </header>
+    <div class="container">
+
+        <div class="appointment-list" id="appointment-list">
+            
+            {%for r in rendez_vous %}
+            <div class="appointment-card">
+                <span class="pers0">
+                    <h3>{{ r.propriete.type }} - {{ r.propriete.localisation }}</h3>
+                <span>
+                    <a href="{% url 'propriete_detail' r.propriete.pk %}" class="details-btn">Voir propriete</a>
+                    <p class="date-time">Date: {{r.date_souhaitee}}</p>
+                    <p class="date-time">Date Confirmer: {{r.date_confirmee}}</p>
+                    <p class="date-time">Statut: {{r.statut}}</p>
+                    <p class="location">{{ r.propriete.localisation }}</p>
+                    
+
+                        <p>Note du client :{{r.commentaire_client}}</p>
+
+                        <p>Note de l'agent : {{r.commentaire_agent}}</p>
+                    <span class="pers0">
+                    {% if r.statut != "ANNULE" %}
+                    <a href="{% url 'annuler_rendez_vous' r.id %}" class="details-btn">Annulez rendez_vous</a>
+                    {% endif%}
+                    {% if user.user_type == "AGENT" %}
+                        {% if r.statut == "ANNULE" %}
+                        {%else%}
+                        <a href="{% url 'modif_statut_rdv' r.id %}" class="details-btn">Confirmer une date</a>
+                        {% endif%}
+                    {% endif%}
+                    </span>
+               
+               
+            </div>
+            {%endfor r in rendez_vous %}
+    </div>
+    {% endblock content %}
+
+
+</body>
+</html>

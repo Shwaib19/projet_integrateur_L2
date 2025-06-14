@@ -3,12 +3,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CustomUser, AgentProfile, ClientProfile
+from .models import CustomUser, AgentProfile, ClientProfile,BailleurProfile
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from .forms import ClientModificationForm, CustomUserForm
+from bien_app.models import Propriete
 
 
 def auth_view(request):
@@ -66,6 +67,8 @@ def redirect_by_user_type(user):
         return redirect('agent_dashboard')
     elif user.user_type == 'CLIENT':
         return redirect('index')
+    elif user.user_type == 'BAILLEUR':
+        return redirect('mes_proprietes')
     else:
         return redirect('accounts:dashboard')
     
@@ -80,6 +83,8 @@ def redirect_user(request):
         return redirect('agent_dashboard')
     elif request.user.user_type == 'CLIENT':
         return redirect('index')
+    elif request.user.user_type == 'BAILLEUR':
+        return redirect('mes_proprietes')
     else:
         return redirect('accounts:dashboard')
     
@@ -336,3 +341,15 @@ def modifier_client(request, client_id):
         'client_form': client_form,
         'client_id': client_id,
     })
+    
+    
+@login_required
+def proprietes_du_bailleur(request):
+    
+    try:
+        bailleur = request.user # via OneToOneField
+        proprietes = Propriete.objects.filter(bailleur=bailleur)
+    except BailleurProfile.DoesNotExist:
+        proprietes = []
+
+    return render(request, 'accounts/bailleur.html', {'proprietes': proprietes})

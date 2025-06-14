@@ -54,8 +54,10 @@
                     </div>
                 </div>
             </section>
-            {% if user.is_authenticated%}
+
             <section class="property-actions">
+            {% if user.is_authenticated%}
+                {% if user.user_type == "CLIENT" %}
                     <button onclick="toggleFavori({{ propriete.id }})"  class="action-button like-button">
                         
                         {%  if est_favori %}
@@ -64,13 +66,28 @@
                          <i class="fas fa-heart"></i> Liker</button>
                         {%  endif %}
 
-                {% if user.user_type == "AGENT" or user.user_type == "MANAGER" %}
-                <button class="action-button edit-button"><i class="fas fa-edit"></i> Modifier</button>
-                {% else %}
+                    <a href="{% url "prendre_rendez_vous" propriete.id  %}"> 
+                        <button  class="action-button like-button"><i class="fas fa-calendar-alt"></i> Prendrerendez-vous</button>
+                    </a>
                 {% endif %}
-            </section>
+                {% if user.user_type == "AGENT" or user.user_type == "MANAGER"  or user == propriete.bailleur %}
+                <a href="{% url "modifier_propriete" propriete.pk %}">    
+                <button class="action-button edit-button"><i class="fas fa-edit"></i> Modifier</button>
+                </a>
+                {% endif %}
+            
             {% else%}
+            <a href="{% url "login"%}">
+                <button  class="action-button like-button"><i class="fas fa-heart"></i> Liker</button>
+            </a>
+
+            <a href="{% url "login"%}">
+                <button  class="action-button like-button"><i class="fas fa-calendar-alt"></i> Prendrerendez-vous</button>
+            </a>
+
             {% endif %}
+            </section>
+
 
             <section class="property-details">
                 <h2>Belle Maison en Centre-Ville</h2>
@@ -104,6 +121,7 @@
         </footer>
         
     </div>
+
 
         <script>
         function toggleFavori(proprieteId) {

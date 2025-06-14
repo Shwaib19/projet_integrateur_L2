@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, AgentProfile, ClientProfile
+from .models import CustomUser, AgentProfile, ClientProfile,BailleurProfile
 
 # Personnalisation de l'affichage des utilisateurs
 class CustomUserAdmin(UserAdmin):
@@ -18,8 +18,7 @@ class CustomUserAdmin(UserAdmin):
 # Enregistrement des modèles
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(AgentProfile)
-from django.contrib import admin
-from .models import ClientProfile
+admin.site.register(BailleurProfile)
 
 @admin.register(ClientProfile)
 class ClientProfileAdmin(admin.ModelAdmin):

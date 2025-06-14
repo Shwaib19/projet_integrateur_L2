@@ -28,43 +28,8 @@
                         <input type="text" id="title" name="title" required>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="type">Type de bien*</label>
-                            {{ prop_form.type }}
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="usage">Usage*</label>
-                            {{ prop_form.usage }}
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="price">Prix (€)*</label>
-                            {{ prop_form.prix }}
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="area">Superficie (m²)*</label>
-                            {{ prop_form.superficie }}
-                        </div>
-                    </div>
-
-                     <div class="form-group">
-                            <label for="status">Option*</label>
-                            {{ prop_form.option }}
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Localisation*</label>
-                            {{ prop_form.localisation }}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="status">statut*</label>
-                            {{ prop_form.statut }}
-                        </div>
+                    {{prop_form.as_p}}
+                </div>
                 </div>
 
                 
@@ -143,9 +108,7 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Gestion Immobilière. Tous droits réservés.</p>
-    </footer>
+
     {% endblock content %}
 
     <!-- Modal de confirmation -->
