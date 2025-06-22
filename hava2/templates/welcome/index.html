@@ -68,7 +68,11 @@
                     <div class="property-tag">{{ propriete.option }}</div>
                     <div class="property-info">
                     <h3>{{ propriete.type }} - {{ propriete.localisation }}</h3>
-                    <p class="price">{{ propriete.prix }} FCFA</p>
+                    {% if propriete.option == "location" %}
+                    <p class="price">{{propriete.prix}} fcfa /mois</p>
+                    {%else%}
+                    <p class="price">{{propriete.prix}} fcfa</p>
+                    {% endif %}
                     <p>{{ propriete.usage }}</p>
                     <a href="{% url 'propriete_detail' propriete.pk %}" class="details-btn">Voir Détails</a>
                     </div>

@@ -19,11 +19,12 @@ def liste_discussions_agent(request):
         return redirect("index")
 
     # Récupère toutes les discussions de l’agent
-    discussions = Discussion.objects.filter(id_agent=agent).prefetch_related('messages', 'id_client__user')
     
-    discussions = Discussion.objects.annotate(
+    discussions = Discussion.objects.filter(id_agent=agent).prefetch_related('messages', 'id_client__user').annotate(
         Last_messages_date=Max('messages__date_envoi')
         ).order_by('-Last_messages_date')
+    
+
     
     discussions_data = []
     for discussion in discussions:

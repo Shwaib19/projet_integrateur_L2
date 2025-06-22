@@ -196,6 +196,14 @@ body {
     color: var(--text-color);
     font-size: 0.95rem;
 }
+.contact-info a {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    text-decoration: n;
+}
 
 .contact-icon {
     width: 24px;

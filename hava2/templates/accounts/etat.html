@@ -19,7 +19,7 @@
             padding: 6px;
             text-align: left;
         }
-        h1, h2, h3 {
+        h1, h2, h3{
             text-align: center;
         }
     </style>
@@ -28,24 +28,25 @@
 <body>
     <div class="container">
         <div class="header-container">
-            <img src="/logo.png" alt="Logo">
             <div class="header-titles">
                 <h1>Rapport Statistique</h1>
                 <h2>Généré par {{ user.get_full_name }}</h2>
+                <p> <h4>Date de generation:</h4> {{date_generation}}</p>
             </div>
         </div>
 
-        <p><strong>Total de propriétés :</strong> {{ total_props }}</p>
-        <p><strong>À vendre :</strong> {{ total_vente }}</p>
-        <p><strong>À louer :</strong> {{ total_location }}</p>
-        <p><strong>Moyenne des prix :</strong> {{ moyenne_prix|floatformat:0 }} FCFA</p>
+        <p><strong>Total de propriétés :</strong> {{ stats.total_props }}</p>
+        <p><strong>À vendre :</strong> {{ stats.total_vente }}</p>
+        <p><strong>À louer :</strong> {{ stats.total_location }}</p>
+        <p><strong>Moyenne des prix de vente :</strong> {{ stats.moyenne_vente|floatformat:0 }} FCFA</p>
+        <p><strong>Moyenne des prix de location mensuel:</strong> {{ stats.moyenne_location|floatformat:0 }} FCFA</p>
 
-        <p><strong>Total de bailleurs :</strong> {{ total_bailleurs }}</p>
-        <p><strong>Total d’agents :</strong> {{ total_agents }}</p>
-        <p><strong>Total de clients :</strong> {{ total_clients }}</p>
+        <p><strong>Total de bailleurs :</strong> {{ stats.total_bailleurs }}</p>
+        <p><strong>Total d’agents :</strong> {{ stats.total_agents }}</p>
+        <p><strong>Total de clients :</strong> {{ stats.total_clients }}</p>
 
-        <p><strong>Total de rendez-vous :</strong> {{ total_rdv }}</p>
-        <p><strong>Rendez-vous confirmés :</strong> {{ rdv_confirmes }}</p>
+        <p><strong>Total de rendez-vous :</strong> {{ stats.total_rdv }}</p>
+        <p><strong>Rendez-vous confirmés :</strong> {{ stats.rdv_confirmes }}</p>
 
         <h3>Répartition par localisation</h3>
         <table>
@@ -53,7 +54,7 @@
                 <tr><th>Localisation</th><th>Nombre de propriétés</th></tr>
             </thead>
             <tbody>
-                {% for loc in localisations %}
+                {% for loc in stats.localisations %}
                     <tr>
                         <td>{{ loc.localisation }}</td>
                         <td>{{ loc.nombre }}</td>

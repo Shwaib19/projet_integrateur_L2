@@ -1,29 +1,28 @@
 # views.py
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+from messenger.models import Discussion
 from .models import CustomUser, AgentProfile, ClientProfile,BailleurProfile
-from .forms import CustomAuthenticationForm, CustomUserCreationForm
+from .forms import CustomAuthenticationForm, CustomUserCreationForm, CustomUserInscriptionForm
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from .forms import ClientModificationForm, CustomUserForm
 from bien_app.models import Propriete
 from RDV.models import RendezVous
-
+from django.db.models import Q
 
 def auth_view(request):
-    """
-    Vue unique pour connexion et inscription
-    """
-    # Si l'utilisateur est déjà connecté, le rediriger
     if request.user.is_authenticated:
         return redirect_by_user_type(request.user)
     
     # Initialiser les formulaires
     login_form = CustomAuthenticationForm()
-    register_form = CustomUserCreationForm()
+    register_form = CustomUserInscriptionForm()
     
     if request.method == 'POST':
         # Déterminer quel formulaire a été soumis
@@ -336,10 +335,26 @@ def modifier_client(request, client_id):
     if request.method == 'POST':
         user_form = CustomUserForm(request.POST, instance=user)
         client_form = ClientModificationForm(request.POST, instance=client)
+        ancien_agent = client.agent  # garder l'ancien agent avant save
+        client_modifie = client_form.save(commit=False)
+        nouvel_agent = client_modifie.agent
 
         if user_form.is_valid() and client_form.is_valid():
             user_form.save()
             client_form.save()
+            if ancien_agent != nouvel_agent:
+                # Vérifie s’il existe déjà une discussion entre le client et le nouvel agent
+                discussion_existante = Discussion.objects.filter(
+                    Q(client=client_modifie.user, agent=nouvel_agent.user) |
+                    Q(agent=nouvel_agent.user, client=client_modifie.user)
+                ).exists()
+                
+                if not discussion_existante:
+                    # Crée une nouvelle discussion
+                    Discussion.objects.create(
+                        client=client_modifie.user,
+                        agent=nouvel_agent.user
+                    )
             return redirect('manage_users')  # ou autre redirection
 
     else:
@@ -367,12 +382,13 @@ def proprietes_du_bailleur(request):
 
 @login_required
 def gestion_bailleurs(request):
-    if not hasattr(request.user, 'managerprofile'):
-        return redirect('home')  # ou page d'erreur
+    if request.user.user_type != "MANAGER":
+        return redirect('index')
 
-    bailleurs = BailleurProfile.objects.all().select_related('user')
+    # Optimisation des requêtes avec select_related et prefetch_related
+    bailleurs = CustomUser.objects.filter(user_type="BAILLEUR").prefetch_related('proprietes')
 
-    return render(request, 'manager/gestion_bailleurs.html', {
+    return render(request, 'accounts/gestion_bailleur.html', {
         'bailleurs': bailleurs,
     })
 
@@ -404,47 +420,71 @@ from django.http import HttpResponse
 ##
 
 
+from django.http import HttpResponse
+from django.template.loader import get_template
+from io import BytesIO
+from xhtml2pdf import pisa
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Avg
+
+
 @login_required
-
 def generer_statistiques_pdf(request):
-    total_props = Propriete.objects.count()
-    total_vente = Propriete.objects.filter(option='À Vendre').count()
-    total_location = Propriete.objects.filter(option='À Louer').count()
+    # Vérification des permissions (ajustez selon vos besoins)
+    if request.user.user_type not in ['MANAGER', 'ADMIN']:
+        return HttpResponse('Accès non autorisé', status=403)
 
+    # Calcul des statistiques
+    total_props = Propriete.objects.count()
+    total_vente = Propriete.objects.filter(option='vente').count()
+    total_location = Propriete.objects.filter(option='location').count()
+    
     total_bailleurs = CustomUser.objects.filter(user_type='BAILLEUR').count()
     total_agents = CustomUser.objects.filter(user_type='AGENT').count()
     total_clients = CustomUser.objects.filter(user_type='CLIENT').count()
-
+    moyennes = Propriete.objects.aggregate(
+    moyenne_vente=Avg('prix', filter=models.Q(option='vente')),
+    moyenne_location=Avg('prix', filter=models.Q(option='location'))
+)
     total_rdv = RendezVous.objects.count()
-    rdv_confirmes = RendezVous.objects.filter(statut='CONFIRMÉ').count()
-
-    moyenne_prix = Propriete.objects.aggregate(models.Avg('prix'))['prix__avg'] or 0
-
+    rdv_confirmes = RendezVous.objects.filter(statut='CONFIRME').count()
+    
+    moyenne_prix = Propriete.objects.aggregate(Avg('prix'))['prix__avg'] or 0
+    
     localisations = (
         Propriete.objects.values('localisation')
-        .annotate(nombre=models.Count('id'))
+        .annotate(nombre=Count('id'))
         .order_by('-nombre')
     )
 
     context = {
-        'total_props': total_props,
-        'total_vente': total_vente,
-        'total_location': total_location,
-        'total_bailleurs': total_bailleurs,
-        'total_agents': total_agents,
-        'total_clients': total_clients,
-        'total_rdv': total_rdv,
-        'rdv_confirmes': rdv_confirmes,
-        'moyenne_prix': moyenne_prix,
-        'localisations': localisations,
+        'stats': {
+            'total_props': total_props,
+            'total_vente': total_vente,
+            'total_location': total_location,
+            'total_bailleurs': total_bailleurs,
+            'total_agents': total_agents,
+            'total_clients': total_clients,
+            'total_rdv': total_rdv,
+            'rdv_confirmes': rdv_confirmes,
+            'moyenne_prix': round(moyenne_prix, 2),
+            'localisations': localisations,
+            **moyennes
+        },
         'user': request.user,
+        'date_generation': timezone.now().strftime("%d/%m/%Y %H:%M"),
     }
 
+    # Génération du PDF
     template = get_template('accounts/etat.html')
     html = template.render(context)
     response = BytesIO()
     pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
 
     if not pdf.err:
-        return HttpResponse(response.getvalue(), content_type='application/pdf')
+        response = HttpResponse(response.getvalue(), content_type='application/pdf')
+        # Nommage du fichier avec date/heure
+        filename = f"rapport_{timezone.now().strftime('%Y-%m-%d')}.pdf"
+        response['Content-Disposition'] = f'inline; filename="{filename}"'
+        return response
     return HttpResponse('Erreur lors de la génération du PDF', status=500)

@@ -1,0 +1,133 @@
+:root {
+    --primary-color: #2D3A51; /* Deep Slate Blue */
+    --secondary-color: #4F627D; /* Muted Blue-Grey */
+    --accent-color: #E5A44A; /* Warm Gold */
+    --accent-color-hover: #CC8D39; /* Darker Gold */
+    --text-color: #333333; /* Very Dark Grey */
+    --light-text-color: #FFFFFF;
+    --bg-color: #F4F7F6; /* Light Cool Grey */
+    --sidebar-bg: #FFFFFF; /* Not used in this layout, but keeping for completeness */
+    --border-color: #DDE2E5; /* Light Grey */
+    --card-bg: #FFFFFF;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+header {
+    background: var(--primary-color);
+    color: var(--light-text-color);
+    padding: 1rem 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+main {
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.manager-card {
+    background: var(--card-bg);
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.manager-card h2 {
+    margin-top: 0;
+    color: var(--secondary-color);
+}
+
+.manager-card p {
+    margin-bottom: 10px;
+}
+
+.manager-card ul {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 15px;
+    padding-top: 10px;
+}
+
+.manager-card ul li {
+    background: var(--bg-color); /* Use a slightly different background for list items */
+    margin-bottom: 10px; /* Increased space between items */
+    padding: 15px; /* Increased padding */
+    border-left: 4px solid var(--accent-color);
+    border-radius: 4px;
+    display: flex; /* Use flexbox to align content and buttons */
+    justify-content: space-between; /* Space out content and buttons */
+    align-items: center; /* Vertically center items */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.property-details {
+    flex-grow: 1; /* Allow details section to take available space */
+    margin-right: 10px; /* Space between details and buttons */
+}
+
+.property-details strong {
+    color: var(--text-color);
+}
+
+.property-actions {
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    margin-top: 10px; /* Add space if wrapped */
+}
+
+/* Button Styles */
+.property-actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-voir {
+    background-color: var(--secondary-color);
+    color: var(--light-text-color);
+}
+
+.button-voir:hover {
+    background-color: #3A4A5E; /* Slightly darker secondary */
+}
+
+.button-supprimer {
+    background-color: #dc3545; /* Bootstrap's danger red */
+    color: var(--light-text-color);
+}
+
+.button-supprimer:hover {
+    background-color: #c82333; /* Darker red */
+}
+
+/* Responsive adjustment */
+@media (max-width: 600px) {
+    .manager-card ul li {
+        flex-direction: column; /* Stack details and buttons vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+    .property-details {
+         margin-right: 0;
+         margin-bottom: 10px;
+    }
+    .property-actions {
+        width: 100%; /* Make button container full width */
+        justify-content: flex-start; /* Align buttons to the start */
+    }
+}

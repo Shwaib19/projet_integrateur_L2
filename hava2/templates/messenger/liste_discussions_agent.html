@@ -115,6 +115,27 @@
                 </div>
             </div>
 
+        <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-contact");
+    const discussions = document.querySelectorAll(".discussion-item");
+
+    searchInput.addEventListener("keyup", function () {
+        const query = searchInput.value.toLowerCase();
+
+        discussions.forEach(item => {
+            const nomClient = item.querySelector("h3").textContent.toLowerCase();
+            if (nomClient.includes(query)) {
+                item.style.display = "flex";  // ou "block", selon ton layout
+            } else {
+                item.style.display = "none";
+            }
+        });
+    });
+});
+</script>
+
+
 
             <script>
 let currentDiscussionId = null;

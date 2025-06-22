@@ -70,7 +70,7 @@
                         <button  class="action-button like-button"><i class="fas fa-calendar-alt"></i> Prendrerendez-vous</button>
                     </a>
                 {% endif %}
-                {% if user.user_type == "AGENT" or user.user_type == "MANAGER"  or user == propriete.bailleur %}
+                {% if user.user_type == "AGENT" or user.user_type == "MANAGER"  or user.user_type == "BAILLEUR" %}
                 <a href="{% url "modifier_propriete" propriete.pk %}">    
                 <button class="action-button edit-button"><i class="fas fa-edit"></i> Modifier</button>
                 </a>
@@ -92,10 +92,15 @@
             <section class="property-details">
                 <h2>Belle Maison en Centre-Ville</h2>
                 <h3> Statut: {{propriete.statut}} </h3>
+                {% if propriete.option == "location" %}
+                <p class="price">Prix: {{propriete.prix}} fcfa /mois</p>
+                {%else%}
                 <p class="price">Prix: {{propriete.prix}} fcfa</p>
+                {% endif %}
                 <p class="location">{{propriete.localisation}}</p>
                 <div class="description">
-                    <h3>Option : {{propriete.option}}</h3>
+                    <h3>Option : {{propriete.type}}</h3>
+                    <h3>Type d'offre : {{propriete.option}}</h3>
                     <p>
                         {{propriete.usage}}
                     </p>

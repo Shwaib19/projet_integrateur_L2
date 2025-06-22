@@ -23,10 +23,6 @@
                     {% csrf_token %}
                 <div class="form-section">
                     <h3>Informations générales</h3>
-                    <div class="form-group">
-                        <label for="title">Titre de la propriété*</label>
-                        <input type="text" id="title" name="title" required>
-                    </div>
                     
                     {{prop_form.as_p}}
                 </div>
@@ -77,22 +73,30 @@
                             {{ img_form.image2 }}
 
 
-                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir image secondaire</label>
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir l'image 2em positon</label>
                         </div>
                         <div class="file-upload">
 
                             {{ img_form.image3 }}
 
 
-                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir image secondaire</label>
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir l'image 3em positon</label>
                         </div>
 
                         <div class="file-upload">
 
                             {{ img_form.image4 }}
 
-                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir image secondaire</label>
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir l'image 4em positon</label>
                         </div>
+
+                        <div class="file-upload">
+                            {{ img_form.image5 }}
+
+
+                            <label for="images" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choisir l'image 5em positon</label>
+                        </div>
+
                         <p class="hint">Formats acceptés: JPG, PNG, GIF. Taille max: 5 Mo par image.</p>
                         <div id="imagePreviewContainer" class="image-preview-container"></div>
                     </div>

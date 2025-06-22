@@ -5,7 +5,7 @@ from django.db import models
 TYPE_CHOICES = [
         ("APPART", 'Appartement'),
         ("VILLA", 'Villa'),
-        ("MAISON", 'Terrain'),
+        ("Terrain", 'Terrain'),
         ("LOCAL", 'Local commercial'),
         ("PARKING", 'Parking'),
     ]
@@ -25,7 +25,7 @@ OPTION_CHOICES = [
 class Propriete(models.Model):
 
     type = models.CharField(max_length=30, choices=TYPE_CHOICES)  # Ex: Appartement, Villa...
-    usage = models.CharField(max_length=100)  # Ex: Habitation, Commercial...
+    usage = models.CharField(max_length=450)  # Ex: Habitation, Commercial...
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='disponible')
     localisation = models.CharField(max_length=255)
     superficie = models.DecimalField(max_digits=10, decimal_places=2)  # en m²

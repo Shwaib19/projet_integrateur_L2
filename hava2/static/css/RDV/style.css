@@ -59,6 +59,7 @@ input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="date"],
+select,
 input[type="time"] {
     width: 100%;
     padding: 12px;

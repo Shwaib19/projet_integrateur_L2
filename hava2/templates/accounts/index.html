@@ -21,28 +21,50 @@
 <body>
     <aside class="sidebar-menu" id="sidebarMenu">
         <div class="logo-container">
-            <img src="logo.png" alt="Agence Immobilière Logo" class="logo">
-            <span class="agency-name">HAVA</span>
+            <img src="{% static "img/logo.png" %}" alt="Agence Immobilière Logo" class="logo">
         </div>
+        {% if user.is_authenticated %}
+        <div class="user-info hidden" id="sidebarUserInfo">
+            <span id="sidebar-client-name">{{ user.first_name }} {{ user.last_name }}</span>
+            <span class="account-type">{{ user.user_type }}</span>
+        </div>
+        {% else %}
+        {% endif %}
         <nav>
             <ul>
-                <li><a href="{% url "index" %}" >Accueil</a></li>
-                <li><a href="">Propriétés</a></li>
-                <li><a href="#about">À Propos</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#" class="login-btn">Connexion / Inscription</a></li>
+                
+                 
+                {% if user.is_authenticated %}
+                <li><a href=" {% url "redirect_user" %} ">Accueil</a></li>
+                    {% if user.user_type == "CLIENT" %}
+                        <li><a href="{% url "mes_favoris" %}">Mes Favoris</a></li>
+                        <li><a href="{% url "discussions_client" %}">Messagerie</a></li>
+                        <li><a href="{% url "mes_rdv" %}">Rendez-vous</a></li>
+                    {% elif user.user_type == "AGENT" %}
+                        <li><a href="{% url "rdv_agent" %}">Rendez-vous</a></li>
+                    {% endif %}
+                {%else%}
+                <li><a href=" {% url "index" %} ">Accueil</a></li>
+                {% endif %}
+
+
+                <li><a href="{% url 'service' %}">Nos Services</a></li>
+                <li><a href="{% url 'apropos' %}">À Propos</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+
+
+                {% if user.is_authenticated %}
+                <li><a href=" {% url 'logout' %} " class="login-btn">Deconnexion</a></li>
+                {% else %}
+                <li><a href=" {% url 'login' %}  " class="login-btn">Connexion / Inscription</a></li>
+                {% endif %}
             </ul>
         </nav>
-        <footer class="sidebar-footer">
-            <p>Suivez-nous sur les réseaux sociaux!</p>
-            <div class="social-icons">
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            </div>
         
-            <p>&copy; 2024 HAVA</p>
+        <footer class="sidebar-footer">
+
+        
+            <p>&copy; 2025 HAVA</p>
         </footer>
     </aside>
 
@@ -112,6 +134,10 @@
                                     {{ register_form.last_name }}
                                 </div>
                                 <div class="input-group">
+                                    <i class="fas fa-user"></i>
+                                    {{ register_form.user_type }}
+                                </div>
+                                <div class="input-group">
                                     <i class="fas fa-envelope"></i>
                                     {{ register_form.email }}
                                 </div>
@@ -146,11 +172,13 @@
                 <div class="auth-benefits">
                     <h3>Pourquoi créer un compte ?</h3>
                     <ul>
-                        <li><i class="fas fa-check-circle"></i> Accès à des annonces exclusives</li>
+                        <li><i class="fas fa-check-circle"></i> Contact direct et rapide avec nos agents</li>
+                        <li><i class="fas fa-check-circle"></i> Discuter avec des agents grace au systeme de messagerie integré</li>
                         <li><i class="fas fa-check-circle"></i> Alertes email personnalisées pour de nouvelles propriétés</li>
                         <li><i class="fas fa-check-circle"></i> Sauvegarde de vos recherches favorites</li>
                         <li><i class="fas fa-check-circle"></i> Gestion facile de vos propriétés (si vous êtes un vendeur/bailleur)</li>
-                        <li><i class="fas fa-check-circle"></i> Contact direct et rapide avec nos agents</li>
+                        <li><i class="fas fa-check-circle"></i> Creer poster et gerer vos proprieté sur la plateforme en quelques clics</li>
+                        
                     </ul>
                 </div>
             </div>

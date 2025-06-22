@@ -8,4 +8,5 @@ urlpatterns = [
     path('favoris/', views.liste_favoris, name='mes_favoris'),
     path('proprietes/modifier/<int:pk>/', views.modifier_propriete, name='modifier_propriete'),
     path('proprietes/supprimer-image/<int:image_id>/', views.supprimer_image, name='supprimer_image'),
+    path('proprietes/supprimer/<int:propriete_id>/', views.supprimer_propriete, name='supprimer_propriete'),
 ]

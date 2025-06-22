@@ -98,6 +98,7 @@ def modif_statut_rdv(request, rdv_id):
     if request.method == 'POST':
         form = ConfirmationRendezVousForm(request.POST, instance=rdv)
         if form.is_valid():
+            form.statut="CONFIRME"
             form.save()
             messages.success(request, "Le statut du rendez-vous a été mis à jour avec succès.")
             return redirect('rdv_agent')  # Redirection adaptée à l'agent

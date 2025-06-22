@@ -196,13 +196,7 @@
 
             </script>
 
-    {% if messages %}
-            <script>
-    {% for message in messages %}
-        alert("{{ message|escapejs }}");
-    {% endfor %}
-            </script>
-    {% endif %}
+
 
     {% endblock content %}
     <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebarMenu">

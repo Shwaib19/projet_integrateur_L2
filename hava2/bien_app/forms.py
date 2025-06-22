@@ -13,6 +13,15 @@ class ProprieteForm(forms.ModelForm):
         })
     )
     
+    usage = forms.CharField(
+        max_length=250,
+        required=True,
+        label="Usage et description",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+        })
+    )
+    
     class Meta:
         model = Propriete
         fields = ['type', 'usage', 'statut', 'localisation', 'superficie', 'prix', 'option','bailleur']

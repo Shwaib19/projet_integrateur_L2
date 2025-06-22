@@ -19,5 +19,6 @@ urlpatterns = [
     path('mes_proprietes/', views.proprietes_du_bailleur, name='mes_proprietes'),
     path('manager/statistiques/pdf/', views.generer_statistiques_pdf, name='generer_statistiques_pdf'),
     path('manager/rdv-agents/', views.liste_rdv_agents, name='liste_rdv_agents'),
+    path('manager/bailleur/', views.gestion_bailleurs, name='gestion_bailleur'),
 
 ]

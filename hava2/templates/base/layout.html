@@ -30,7 +30,7 @@
     
     <aside class="sidebar-menu" id="sidebarMenu">
         <div class="logo-container">
-            <img src="{% static "img/logo.png" %}" alt="Agence Immobilière Logo" class="logo">
+            <a href=" {% url "index" %} "><img src="{% static "img/logo.png" %}" alt="Agence Immobilière Logo" class="logo"> </a>
         </div>
         {% if user.is_authenticated %}
         <div class="user-info hidden" id="sidebarUserInfo">
@@ -90,6 +90,14 @@
         <span></span>
         <span></span>
     </button>
+
+        {% if messages %}
+            <script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+            </script>
+    {% endif %}
 
     <script type="module">
         import { init } from 'app';

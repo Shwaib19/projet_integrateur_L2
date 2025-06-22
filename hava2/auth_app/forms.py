@@ -5,12 +5,14 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate
 from .models import CustomUser, AgentProfile, ClientProfile,BailleurProfile
 from messenger.models import Discussion
-class CustomUserCreationForm(UserCreationForm):
+
+class CustomUserInscriptionForm(UserCreationForm):
     """
     Formulaire d'inscription personnalisé pour CustomUser (utilise email au lieu de username)
     """
     email = forms.EmailField(
         required=True,
+        label="Email",
         widget=forms.EmailInput(attrs={
             'class': 'form-control',
             'placeholder': 'Votre email'
@@ -20,6 +22,7 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(
         max_length=30,
         required=True,
+        label="Prenom",
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'Prénom'
@@ -29,6 +32,7 @@ class CustomUserCreationForm(UserCreationForm):
     last_name = forms.CharField(
         max_length=30,
         required=True,
+        label="Nom",
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'Nom'
@@ -38,6 +42,163 @@ class CustomUserCreationForm(UserCreationForm):
     phone = forms.CharField(
         max_length=20,
         required=False,
+        label="Telephone",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Numéro de téléphone (optionnel)'
+        })
+    )
+    
+
+    adresse = forms.CharField(
+        max_length=20,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Adresse (optionnel)'
+        })
+    )
+    
+    user_type = forms.ChoiceField(
+        required=False,
+        choices= (
+        ('CLIENT', 'Client'),
+        ('BAILLEUR', 'Bailleur'),
+    ),
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'placeholder': 'Adresse (optionnel)'
+        })
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'first_name', 'last_name', 'phone', 'adresse','user_type', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Supprimer le champ username du formulaire
+        if 'username' in self.fields:
+            del self.fields['username']
+        
+        # Personnalisation des widgets des mots de passe
+        self.fields['password1'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Mot de passe'
+        })
+        
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Confirmer le mot de passe'
+        })
+
+    def clean_email(self):
+        """
+        Vérifier que l'email n'existe pas déjà
+        """
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Cet email est déjà utilisé.")
+        return email
+
+    def save(self, commit=True):
+        """
+        Sauvegarder l'utilisateur avec l'email comme username
+        """
+        user = super().save(commit=False)
+        
+        # Utiliser l'email comme username
+        user.username = self.cleaned_data['email']
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.phone = self.cleaned_data['phone']
+        
+        if commit:
+            user.save()
+            # Créer automatiquement le profil selon le type d'utilisateur
+            self.create_user_profile(user)
+        
+        return user
+
+
+    def create_user_profile(self, user):
+        """
+        Créer automatiquement le profil selon le type d'utilisateur
+        """
+        if user.user_type == 'AGENT':
+            AgentProfile.objects.get_or_create(user=user)
+
+        elif user.user_type == 'BAILLEUR':
+            created = BailleurProfile.objects.get_or_create(user=user)
+
+        elif user.user_type == 'CLIENT':
+            client_profile, created = ClientProfile.objects.get_or_create(user=user)
+
+            if created:
+                # Choix aléatoire d'un agent
+                agents = CustomUser.objects.filter(user_type='AGENT')
+                if agents.exists():
+                    selected_agent = random.choice(agents)
+                    
+                    client_profile.agent = selected_agent
+                    client_profile.save()
+
+                    # 🔥 Obtenir le profil agent lié à l’utilisateur agent
+                    try:
+                        p_agent = selected_agent.agentprofile  # via OneToOneField
+                    except AgentProfile.DoesNotExist:
+                        p_agent = None
+                    
+                    if p_agent:
+                        Discussion.objects.get_or_create(
+                            id_client=client_profile,
+                            id_agent=p_agent
+                        )
+        
+
+
+
+
+
+class CustomUserCreationForm(UserCreationForm):
+    """
+    Formulaire d'inscription personnalisé pour CustomUser (utilise email au lieu de username)
+    """
+    email = forms.EmailField(
+        required=True,
+        label="Email",
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Votre email'
+        })
+    )
+    
+    first_name = forms.CharField(
+        max_length=30,
+        required=True,
+        label="Prenom",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Prénom'
+        })
+    )
+    
+    last_name = forms.CharField(
+        max_length=30,
+        required=True,
+        label="Nom",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Nom'
+        })
+    )
+    
+    phone = forms.CharField(
+        max_length=20,
+        required=False,
+        label="Telephone",
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'Numéro de téléphone (optionnel)'

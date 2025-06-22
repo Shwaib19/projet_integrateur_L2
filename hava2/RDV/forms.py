@@ -16,8 +16,19 @@ class DemandeRendezVousForm(forms.ModelForm):
 # 🔹 2. Formulaire côté AGENT — confirmation du rendez-vous
 class ConfirmationRendezVousForm(forms.ModelForm):
     class Meta:
+        statut=forms.ChoiceField(
+        required=False,
+        choices= (
+        ('CONFIRME', 'CONFIRME'),
+        ('EN_ATTENTE', 'EN_ATTENTE'),
+        ),
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+        })
+        )
+        
         model = RendezVous
-        fields = ['date_confirmee', 'commentaire_agent']
+        fields = ['date_confirmee', 'commentaire_agent','statut']
         widgets = {
             'date_confirmee': forms.DateTimeInput(attrs={'type': 'date', 'class': 'form-control' ,'min': timezone.now().strftime('%Y-%m-%d')}),
             'commentaire_agent': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Message pour le client (facultatif)'}),

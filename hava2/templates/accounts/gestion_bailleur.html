@@ -1,0 +1,55 @@
+{% extends "base/layout.html" %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion des utilisateurs - HAVA{% endblock title %}</title>
+    {% block css %} 
+        <link rel="stylesheet" type="text/css" href="{% static 'css/accounts/gestion_bailleur.css' %}" />
+        {% endblock css %} 
+</head>
+<body>
+    {% block content %} 
+    <main id="manager-dashboard">
+        
+        {% for bailleur in bailleurs %}
+            <div class="manager-card">
+            <h2>{{ bailleur.first_name }} {{ bailleur.last_name }}</h2>
+            <h3>Liste des propriétés :</h3>
+            <ul>
+             {% for propriete in bailleur.proprietes.all %}   
+            <li>
+                <div class="property-details">
+                    <strong>{{ propriete.type }} à {{ propriete.localisation }}</strong> <br>
+                    <strong>Adresse:</strong> {{ propriete.localisation }}<br>
+                    <strong>Type:</strong>{{ propriete.type }}<br>
+                    <strong>Prix:</strong> {{ propriete.prix }} fcfa
+                </div>
+                <div class="property-actions">
+
+                    <a href='{% url "modifier_propriete" propriete.pk %}'>
+                        <button class="button-voir">Modifier</button>
+                    </a>
+
+                    <a href='{% url "supprimer_image" propriete.pk %}' class="btn a" >
+                    <button class="button-supprimer">Supprimer</button>
+                    </a>
+
+                </div>
+            </li>
+            {% empty %}
+            <li>Aucune propriété enregistrée.</li>
+            {% endfor %}
+        
+            </ul>
+        </div>
+       {% endfor %}
+
+
+    </main>
+    {% endblock content %} 
+    <script type="module" src="script.js"></script>
+</body>
+</html>

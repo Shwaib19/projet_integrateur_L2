@@ -20,8 +20,11 @@
         <form id="appointmentForm" method="POST">
             {% csrf_token %}
             {{form.as_p}}
-            
+            {% if user.user_type == "AGENT" %}
+            <button type="submit">Confirmer Rendez-vous</button>
+             {% else %}
             <button type="submit">Demander un Rendez-vous</button>
+            {% endif %}
         </form>
         <div id="confirmationMessage" class="confirmation-message"></div>
     </div>

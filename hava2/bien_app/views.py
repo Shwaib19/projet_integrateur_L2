@@ -38,14 +38,19 @@ def ajouter_propriete(request):
                 propriete = prop_form.save(commit=False)
                 propriete.bailleur = request.user
                 propriete.save()
+                
+            elif request.user.user_type != "CLIENT":
+                propriete = prop_form.save(commit=False)
+                propriete.save()
 
                 # Enregistrer les images
-                for img_field in ['image1', 'image2', 'image3', 'image4', 'image5']:
-                    image_file = img_form.cleaned_data.get(img_field)
-                    if image_file:
-                        Image.objects.create(propriete=propriete, image=image_file)
+            for img_field in ['image1', 'image2', 'image3', 'image4', 'image5']:
+                image_file = img_form.cleaned_data.get(img_field)
+                if image_file:
+                    Image.objects.create(propriete=propriete, image=image_file)
+                        
 
-                return redirect('index')
+            return redirect('index')
     else:
         prop_form = ProprieteForm()
         img_form = ImageUploadForm()
@@ -97,12 +102,12 @@ def liste_favoris(request):
 
 @login_required
 def modifier_propriete(request, pk):
-    bailleur = getattr(request.user, 'bailleurprofile', None)
-    if not bailleur:
+    user_type=request.user.user_type=="CLIENT"
+    if (user_type):
         messages.error(request, "Vous devez être un bailleur pour modifier une propriété.")
-        return redirect('mes_proprietes')
+        return redirect('index')
 
-    propriete = get_object_or_404(Propriete, pk=pk, bailleur=bailleur.user)
+    propriete = get_object_or_404(Propriete, pk=pk)
 
     if request.method == 'POST':
         form = ProprieteForm(request.POST, request.FILES, instance=propriete)
@@ -110,7 +115,6 @@ def modifier_propriete(request, pk):
 
         if form.is_valid() and image_form.is_valid():
             propriete_modifiee = form.save(commit=False)
-            propriete_modifiee.bailleur = bailleur.user
             propriete_modifiee.save()
 
             # Traitement des nouvelles images
@@ -120,7 +124,10 @@ def modifier_propriete(request, pk):
                     image_obj = Image.objects.create(propriete=propriete_modifiee, image=image_file)
                     print("Image créée :", image_obj.image.url)
             messages.success(request, "Propriété modifiée avec succès.")
-            return redirect('mes_proprietes')
+            if (user_type== "BAILLEUR"):
+                return redirect('mes_proprietes')
+            else:
+                return redirect('index')
         else:
             messages.error(request, "Une erreur est survenue. Veuillez corriger les champs du formulaire.")
             if not form.is_valid():
@@ -148,11 +155,15 @@ def modifier_propriete(request, pk):
 def supprimer_image(request, image_id):
     image = get_object_or_404(Image, pk=image_id)
 
-    bailleur = getattr(request.user, 'bailleurprofile', None)
-    if image.propriete.bailleur != bailleur.user:
-        messages.error(request, "Vous n'avez pas la permission de supprimer cette image.")
-        return redirect('mes_proprietes')
 
     image.delete()
     messages.success(request, "Image supprimée avec succès.")
     return redirect('modifier_propriete', pk=image.propriete.pk)
+
+def supprimer_propriete(request, propriete_id):
+    image = get_object_or_404(Propriete, pk=propriete_id)
+
+
+    image.delete()
+    messages.success(request, "Proprieté supprimée avec succès.")
+    return redirect('mes_proprietes')
